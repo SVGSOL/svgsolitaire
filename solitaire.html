@@ -1,0 +1,3989 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name='keywords' content='svg, solitaire, svgsol, svgsolitaire, svg.solitaire, solitaire.svg, javascript' />
+    <meta name='Author' content='The SVG Solitaire Project' />
+    <meta name='Email' content='solitaire.svg@gmail.com' />
+    <meta name='robots' content='All' />
+    <meta name='GOOGLEBOT' content='index, follow' />
+    <meta name='yahooBOT' content='index, follow' />
+    <meta name="Copyright" CONTENT="2016-2017 The SVG Solitaire Project. All rights reserved."/>
+    <meta HTTP-EQUIV="Window-target" CONTENT="_top" />
+
+    <!--
+	http://learnoo.altervista.org/solitaire.html
+	http://learnoo.altervista.org/solitaire.html?demo&any=5&rnd=0
+	http://tinyurl.com/svgsol
+	http://tinyurl.com/svgsold
+
+	http://svgsol.altervista.org/
+	http://svgsol.altervista.org/index.html?demo&any=5&rnd=0
+	https://sites.google.com/view/svg-solitaire/
+		solitaire.svg@gmail.com
+
+	$Date: 2017/04/22 02:15:35 $ $Revision: 1.194 $
+    -->
+
+    <!-- ***** BEGIN LICENSE BLOCK *****
+    *
+    * Copyright (c) 2017 The SVG Solitaire Project <solitaire.svg@gmail.com> All rights reserved.
+    *
+    * Permission is hereby granted, free of charge, to any person obtaining a copy
+    * of this software and associated documentation files (the "Software"), to deal
+    * in the Software without restriction, including without limitation the rights
+    * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    * copies of the Software, and to permit persons to whom the Software is
+    * furnished to do so, subject to the following conditions:
+    *
+    * The above copyright notice and this permission notice shall be included in
+    * all copies or substantial portions of the Software.
+    *
+    * THIS SOFTWARE IS PROVIDED BY THE SVG Solitaire PROJECT "AS IS" AND ANY EXPRESSED OR
+    * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL The SVG Solitaire Project
+    * OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+    * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+    * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+    * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    *
+    * Except as contained in this notice, the name of a copyright holder shall not be used
+    * in advertising or otherwise to promote the sale, use or other dealings in this Software
+    * without prior written authorization of the copyright holder.
+    *
+    * Contributor(s):
+    *   The SVG Solitaire Project <solitaire.svg@gmail.com> (Original Author)
+    *
+    * ***** END LICENSE BLOCK ***** -->
+
+    <style>
+	/* ACE    ADD    BAD    BED    BEE    CAB    CAD    DAB    DAD    EBB    FAD    FED    FEE    */
+	/* ACCEDE BAFFED BEADED BEDDED BEEFED CABBED DABBED DECADE DECAFF DEEDED DEFACE EFFACE FACADE */
+
+	text.smallBlack {
+	    stroke:		#000;
+	    fill:		#000;
+	    font-size:		200%;
+	    font-family:	Arial, Verdana, Helvetica, Tahoma, sans-serif;
+	    cursor:		pointer;
+	}
+	text.mediumBlack {
+	    fill:		#000;
+	    font-size:		400%;
+	    font-family:	Georgia, Palatino, Times, serif;
+	    cursor:		pointer;
+	    stroke-width:	0;
+	    font-weight:	600;
+	}
+	text.mediumRed {
+	    fill:		#e61408;
+	    font-size:		400%;
+	    font-family:	Georgia, Palatino, Times, serif;
+	    cursor:		pointer;
+	    stroke-width:	0;
+	    font-weight:	600;
+	}
+	text.big {
+	    font-size:		1200%;
+	    opacity:		0.2;
+	    font-weight:	bold;
+	    font-stretch:	ultra-condensed;
+	    font-family:	sans-serif;
+	    cursor:		default;
+	}
+	text.HB {
+	    fill:		#642;
+	    font-size:		600%;
+	    text-anchor:	middle;
+	    cursor:		context-menu;
+	    stroke-width:	0;
+	}
+	.zeroOL {
+	    stroke-width:	0;
+	}
+	.zeroOP {
+	    opacity:		0.2;
+	}
+	.menuHB {
+	    fill:		#DD2800;
+	    stroke-width:	2;
+	    stroke:		#A42;
+	    cursor:		context-menu;
+	}
+	.button {
+	    fill:		#DD2800;
+	    stroke-width:	2;
+	    stroke:		#A42;
+	    cursor:		pointer;
+	}
+	.menuX {
+	    fill:		#BB2800;
+	    stroke-width:	2;
+	    stroke:		#A42;
+	}
+	.menuR {
+	    fill:		#DD2800;
+	    stroke-width:	0;
+	    cursor:		context-menu;
+	}
+	.menuOption {
+	    fill:		#DD2800;
+	    stroke-width:	1;
+	    stroke:		#BB2800;
+	    cursor:		context-menu;
+	    opacity:		0.5;
+	}
+	.menuOption:hover {
+	    fill:		#FF6000;
+	}
+	text.ME {
+	    fill:		#210;
+	    stroke-width:	0;
+	    font-size:		230%;
+	    font-family:	Liberation, 'DejaVu Sans', sans-serif, Tahoma, Helvetica, Verdana, Arial;
+	}
+	.playBG:hover * {
+	    fill:		#F8F8F8;
+	}
+	.playCR:hover * {
+	    cursor:		pointer;
+	}
+	.fillRed {
+	    fill:		#FF2800;
+	}
+	.fillGreen {
+	    fill:		#006600;
+	}
+	.allRed {
+	    fill:		#FF2800;
+	    stroke:		#FF2800;
+	}
+	.allGreen {
+	    fill:		#006600;
+	    stroke:		#006600;
+	}
+
+    </style>
+
+    <script type="text/javascript">
+	'use strict'
+
+	function redoHtml() {
+	    // nop
+	}
+
+	//
+	//	http://learnoo.altervista.org/solitaire.html
+	//	solitaire.svg@gmail.com
+	//
+	//	TODO: click on HEART suite card causes a heart-beat
+	//	TODO: just before auto-finish, spin the first card to be removed
+	//
+	//	TODO: start game by "dealing" cards from stock - all backs, then 'flip' top cards over
+	//	TODO: add gradient to background .bigBG <g id="board">
+	//	TODO: placeholders as brighter opaque outlines - thus background gradient is apparent
+	//	TODO: drop shadows for cards and backs
+	//	TODO:
+	//	TODO: graphics as data: for custom cursors
+	//	TODO:   li { background: url(data:image/gif;base64,R0lGODlhEAAQAMQAAORH); }
+	//	TODO:   cursor:	url(smiley.gif),url(myBall.cur),auto
+	//	TODO:   grainy repeating background		feTurbulence type='fractalNoise'
+	//	TODO: remove - 'restart this game' option, if no game has been started
+	//	TODO: print TIME below buttons
+	//	TODO: proportionally bigger HB menu on physically smaller devices
+	//
+
+	var   DEBUG =  false			// verbose logging ? c.f. 'location.search.substring'
+	var   DEBG2 =  false			// verbose logging ?
+	var   DEBG3 =  false			// verbose logging ? c.f. findWinner()
+	var   MENUX =  false			// menu exposed ?
+	var   GOVER =  false			// game over ?
+	var   AUTUP =  1000000			// autoFaceUp value added to move entry in history
+	var   WINOP =  365			// optimum number of reps to calculate a winning hand
+
+	var   WCTRC =  2			// min faceUp
+	var   WIMIN =  24			// min faceUp
+	var   WINUP =  24			// max rand() faceUp cards on the tableau when the game is won
+						// sample of 50 games had on avg 19.5 face up cards
+
+	var   NOMUV =  0			// no more moves on history , 0 is not a possible value of a move
+	var   DEAL  =  ''			// random sequence of cards
+	var   MOVES =  0			// move counter
+	var   SCORE =  0			//
+	var   TRYS  =  0			// Attempts at current game
+	var   SC_WT =  5			// Waste to Tableau		// 45
+	var   SC_WF =  10			// Waste to Foundation		// 60
+	var   SC_TF =  10			// Tableau to Foundation	// 60	also        15
+	var   SC_TO =  5			// Turn over Tableau card	// 25
+	var   SC_TT =  0			// Tableau to Tableau		// -25
+	var   SC_FF =  0			// Foundation to Foundation	// pointless move
+	var   SC_FT =  -10			// Foundation to Tableau	// -75	also -5 or -15
+	var   SC_FP =  -20			// xs cycles through waste	// -125	also -25
+	var   SC_UN =  -5			// undo - not used		// -25
+	var   TIMER =  0			// elapsed time
+	var   FLIPS =  0			// number of complete cycles through waste
+	var   FLIPF =  3			// free complete cycles - otherwise SC_FP
+	var   FLIPA = -6			// automatic flip
+	var   FLPM1 = -1			// manual flip - 1 card  - can only happen as the last flip
+	var   FLPM2 = -2			// manual flip - 2 cards - can only happen as the last flip
+	var   FLPM3 = -3			// manual flip - 3 cards - 'standard' amount
+	var   viewX = 24			// viewport width  - always multiplied by a percent
+	var   viewY = 14			// viewport height - so, keep it simple
+	var   cardW =  8.5			// percent - card width  - refer to #cardOutline
+	var   cardH = 20			// percent - card height - refer to #cardOutline
+	var   gapT  =  0.5 + cardW		// percent - X distance between left of each column in tableau
+	var   gapR  =  2			// percent - Y distance between top of each face down card in tableau
+	var   gapU  =  4			// percent - Y distance between top of each face up   card in tableau
+	var   gapF  =  1 + cardH		// percent - Y distance between top  of each foundation
+	var   ndntX =  2			// percent - indent left
+	var   ndntY =  2			// percent - indent top
+	var   ndntT =  2.5 + ndntX + cardW	// percent - indent tableau
+	var   ndntW =  2 + ndntT + ( 7 * gapT )	// percent - indent waste : 2 due to extra 0.5 from gapT
+	var   gapWx =  cardW / 2		// percent - X distance between left of each waste card - #hamburger
+	var   gapWy =  6			// percent - Y distance between top  of each waste card - #hamburger
+	var   gapSx =  ndntW + ( 2 * gapWx )	// stock X position
+	var   gapSy =  ndntY + ( 2 * gapF  )	// stock Y position - aligns with 2nd from last foundation
+
+	var   menuText = ["Restart Game", "New Game", "Winning Game", "Demo Game", "Cancel"]
+	var   menuW =  13.6				// percent - menu width
+	var   menuO =  7.9				// percent - menu option height
+	var   menuH =  ( menuO * menuText.length ) + 2	// percent - menu height
+
+	var   topWX = ( ndntW + ( gapWx * 2 )) * viewX	// coordinates of top card on waste
+	var   topWY = ( ndntY + ( gapWy * 2 )) * viewY	// coordinates of top card on waste
+	var   mxMot = topWX - ( ndntX * viewX )	// Max horizontal distance a card can travel
+	var   mxTym = 0.25			// Max length of time for animation
+	var   CNDYTM = 9			// dur'ation of candy1animate
+	var   PARAM_ANY = -1			// animation to use
+	var   PARAM_RND = -1			// animation parameter random
+	var   PLAY_DEMO = false			// demo game
+
+	var   nsSvg = "http://www.w3.org/2000/svg"
+	var   nsLnk = "http://www.w3.org/1999/xlink"
+
+	var   objBoard, objMenuMDL, objMenuX, objButtonB, objButtonF, objButtonTextB, objButtonTextF, objScore, objScoreText, objSvg, objDefs, objPttrn, objCnd1Crcl, objCnd1Pth1, objCnd1Pth2, objBigHeart
+
+	var   NAMEZ = new Array(52)
+	var   CARDS = new Array(52)
+	var   CARDZ = new Array(52)
+	var   DECK  = new Array(52)
+	var   DCKB  = new Array(52)
+	var   DCKS  = new Array(52)
+	var   DCKT  = new Array(52)
+	var   nmbrs = ["A",  "2",  "3",  "4",  "5",  "6",  "7",  "8",  "9",  "10",  "J",  "Q", "K"]
+	var   nmbrz = ["A", " 2", " 3", " 4", " 5", " 6", " 7", " 8", " 9", " 10", " J", " Q", "K"]
+	var   suiteCDSH = ["C", "D", "S", "H"]
+	var   PIPOB = new Array()
+	var   ROLOR = "#e61408;orange;gold;red;gold;orange;#e61408"
+	var   KOLOR = [ "black;blue;brown;green;gold;indigo;black",
+			"#e61408;fuchsia;maroon;lime;blue;#e61408",
+			"black;orange;magenta;cyan;black" ]
+	var   QOLOR = new Array()
+
+	var lTabl1 = new Array(14)	//  0
+	var lTabl2 = new Array(15)	//  1
+	var lTabl3 = new Array(16)	//  2
+	var lTabl4 = new Array(17)	//  3
+	var lTabl5 = new Array(18)	//  4
+	var lTabl6 = new Array(19)	//  5
+	var lTabl7 = new Array(20)	//  6
+	var lStock = new Array(24)	//  7
+	var lWaste = new Array(24)	//  8
+	var lFond1 = new Array(14)	//  9
+	var lFond2 = new Array(14)	// 10
+	var lFond3 = new Array(14)	// 11
+	var lFond4 = new Array(14)	// 12
+
+	var   LAYOUT = [ lTabl1,   lTabl2,   lTabl3,    lTabl4,    lTabl5,    lTabl6,    lTabl7,
+			 lStock,   lWaste,   lFond1,    lFond2,    lFond3,    lFond4     ]
+
+	var   fNames = ['lFond1', 'lFond2', 'lFond3',  'lFond4' ]
+
+	var   sltKez = ['lTabl1', 'lTabl2', 'lTabl3',  'lTabl4',  'lTabl5',  'lTabl6',  'lTabl7',
+			'lStock', 'lWaste', fNames[0], fNames[1], fNames[2], fNames[3]   ]
+	var   sltStockNum = 7
+	var   sltWasteNum = 8
+
+	var pHoldS = new Array(3)	//	placeholder, start and flip
+	var pHoldW = new Array(3)	//	placeholders for 3 waste positions
+	var waste3 = new Array(3)
+	var wastXY = new Array(3)	//	placeholder images
+	var fondX  = new Array()	//	placeholder images - %hash
+	var fondY  = new Array()	//	placeholder images - %hash
+	var fondXY = new Array()	//	placeholder images - %hash
+
+	var strNum = new Array()
+	var loHash = new Array()
+	var kezSlt = new Array()
+	var crdBck = new Array(7)
+	var LAME1 = new Array(28)
+	var LAME2 = new Array(28)
+
+	var histB = new Array()
+	var histF = new Array()
+	var histD = new Array()		//	to debug history
+	var histL = new Array()		//	to debug layout
+
+	var HOLDER = new Array()	//	card animation
+	var MOTIAN = new Array()	//	card animation
+
+	var BINARY1 = ['#0000ff', '#0ba7b4', '#bbd817', 'blue', '#443266', '#F1F0FF', '#FFCC00', '#0099CC', '#333399', '#333399', '#CCCC00', '#CC6600', '#217C7E', '#003399', '#003399', '#003366', '#CC99CC', '#003366', '#336600', '#FFFF66', '#D4D7FE', '#000066', '#663333', '#CCFFFF', '#C0C0C0', '#C0C0C0', '#FFCC00', '#79BEDB', '#660033', '#E0E6FF', '#C0C0C0', '#FFFFBE', '#3F5F5F', '#FFFF66', '#003333', '#666699', '#005A04', '#CCFFBB', '#CCFFBB', '#000066', '#000066', '#CCCCFF', '#99CC00', '#CC6666', '#CC9933', '#FF6600', '#FF0080', '#FF9900', '#D6BF86', '#FFFBD0', '#006699', '#FFFF81', '#336699', '#FFFF00', '#B0C4DE']
+	var BINARY2 = ['#70b000', '#ace'   , '#a9ce00', 'yellow', '#C3C3E5', '#8C489F', '#FF9900', '#003399', '#3399FF', '#3366CC', '#0F3B5F', '#FF9900', '#F3EFE0', '#6699FF', '#3366CC', '#996699', '#660066', '#FF6600', '#C0C0C0', '#009966', '#666666', '#FFCC00', '#FFCC99', '#336666', '#336699', '#999966', '#666699', '#266A2E', '#777B88', '#330033', '#003264', '#003264', '#FFFF66', '#2F4F4F', '#CCCC99', '#003366', '#CCFFBB', '#3A5F0B', '#005502', '#FFFFCC', '#CCCCFF', '#990066', '#669966', '#663333', '#336699', '#660099', '#800080', '#FFCC00', '#9C2A00', '#9C2A00', '#FFFF81', '#0099CC', '#FFFF00', '#990033', '#0099CC']
+	var BINARY_NDX
+
+	var RAD2DEG = 180 / Math.PI
+	var DEG2RAD = Math.PI / 180
+	var CELEBRT = false
+
+	function width(){
+	   return( window.innerWidth  || document.documentElement.clientWidth  || document.body.clientWidth  || 0 )
+	}
+	function height(){
+	   return( window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 0 )
+	}
+
+	function browserResize() {
+	    objSvg.setAttribute('width',  width())
+	    objSvg.setAttribute('height', height())
+	}
+
+	function zeroClock() {
+	    objSvg.setCurrentTime(0)
+	}
+
+	function newCandy(keep) {
+	    if ( ! keep ) BINARY_NDX = Math.floor( Math.random() * BINARY1.length )
+
+	    if (Math.random() < 0.5) {
+		objCnd1Crcl.style.fill = BINARY1[ BINARY_NDX ]
+		objCnd1Pth1.style.fill = BINARY2[ BINARY_NDX ]
+		objCnd1Pth2.style.fill = BINARY1[ BINARY_NDX ]
+	    } else {
+		objCnd1Crcl.style.fill = BINARY2[ BINARY_NDX ]
+		objCnd1Pth1.style.fill = BINARY1[ BINARY_NDX ]
+		objCnd1Pth2.style.fill = BINARY2[ BINARY_NDX ]
+	    }
+	}
+
+	function init() {
+	    objSvg		= document.getElementById("mumble")
+	    objDefs		= document.getElementById("svgDefs")
+	    objPttrn		= document.getElementById("pattern1")
+	    objBoard		= document.getElementById("board")
+	    objButtonTextB	= document.getElementById("buttonTextB")
+	    objButtonTextF	= document.getElementById("buttonTextF")
+	    objScoreText	= document.getElementById("scoreText")
+	    objCnd1Crcl		= document.getElementById("candy1circle")
+	    objCnd1Pth1		= document.getElementById("candy1path1")
+	    objCnd1Pth2		= document.getElementById("candy1path2")
+	    PIPOB		= [ document.getElementById("pipC"), document.getElementById("pipD"),
+				    document.getElementById("pipS"), document.getElementById("pipHBig")	]
+	    QOLOR["pipC"] = KOLOR[ 0 ]
+	    QOLOR["pipD"] = KOLOR[ 1 ]
+	    QOLOR["pipS"] = KOLOR[ 2 ]
+
+	    if ( location.search.substring(1) == 'debug') DEBUG = true
+	    if ( DEBUG ) console.log('debugging enabled')
+
+	    if (window.addEventListener) {
+		window.addEventListener("resize", browserResize)
+	    } else if (window.attachEvent) {
+		window.attachEvent(   "onresize", browserResize)
+	    }
+	    browserResize()
+	    newCandy(false)
+
+	    var col, row, ndx, x, y
+
+	    for ( ndx = 0;  ndx < 52;  ndx++) strNum[ '' + ndx ] = ndx		// quick conversion
+
+	    //
+	    //	build hashMap of layout arrays
+	    //
+	    for ( ndx = 0; ndx < sltKez.length; ndx++ ) {
+		var key = sltKez[ ndx ]
+		loHash[ key ] = LAYOUT[ ndx ]
+		kezSlt[ key ] = ndx
+		LAYOUT[ ndx ][ 0 ] = -1			// todo: c.f. "one off cleanup"
+	    }
+
+	    ndx = 0
+	    for ( col = 0; col < 7; col++ ) {
+		for ( row = 0; row <= col; row++ ) {
+		    LAME1[ ndx   ] = kezSlt['lTabl' + ( col + 1 ) ]
+		    //
+		    //	0 position in tableau has "#tableau", i.e., placeholder image
+		    //
+		    LAME2[ ndx++ ] = row + 1
+		}
+	    }
+
+	    for ( col = 0; col < 7; col++ ) {
+		crdBck[ col ] = new Array( col + 1 )
+		for ( row = 0; row <= col; row++ ) {
+		    var back = document.createElementNS( nsSvg,	"use")
+		    back.setAttributeNS( nsLnk, "xlink:href",	( row == 0 ? "#tableau" : "#back1"))
+		    back.setAttribute('x',  ( ndntT + ( gapT * col )) * viewX )
+		    back.setAttribute('y',  ( ndntY + ( gapR * ( row == 0 ? 0 : row -1 ))) * viewY )
+		    if ( row == 0 ) {
+			objBoard.appendChild( back )
+		    } else {
+			crdBck[ col ][ row ] = back
+		    }
+		}
+	    }
+	    for ( ndx = 0; ndx < pHoldS.length; ndx++ ) {
+		var stock = document.createElementNS( nsSvg,	"use")
+		stock.setAttributeNS( nsLnk, "xlink:href",	"#stockImg" + ndx )
+		stock.setAttribute("x",		gapSx * viewX )
+		stock.setAttribute("y",		gapSy * viewY )
+		stock.setAttribute("id",	"stock" + ndx )
+		stock.setAttribute("faceUp",	( ndx == 0 ? 1 : 0 ))
+		stock.addEventListener('click', showHideStock)
+		pHoldS[ ndx ] = stock
+	    }
+	    objBoard.appendChild( pHoldS[ 2 ] )				//	blank placeholder
+	    objBoard.appendChild( pHoldS[ 0 ] )				//	games start
+
+	    for ( ndx = 0; ndx < pHoldW.length; ndx++ ) {
+		var wast = document.createElementNS( nsSvg,	"use")
+		wast.setAttributeNS( nsLnk, "xlink:href",	"#waste")
+		x = ( ndntW + ( gapWx * ndx )) * viewX
+		y = ( ndntY + ( gapWy * ndx )) * viewY
+		wast.setAttribute('x', x )
+		wast.setAttribute('y', y )
+		pHoldW[ ndx ] = wast
+		wastXY[ ndx ] = "translate(" + x + "," + y + ")"
+		objBoard.appendChild( wast )
+	    }
+	    for ( ndx = 0; ndx < 4; ndx++ ) {
+		var fond = document.createElementNS( nsSvg,	"use")
+		fond.setAttributeNS( nsLnk, "xlink:href",	"#foundation")
+		x =   ndntX                   * viewX
+		y = ( ndntY + ( gapF * ndx )) * viewY
+		fond.setAttribute('x', x )
+		fond.setAttribute('y', y )
+		fondXY["lFond" + ( ndx + 1 ) ] = "translate(" + x + "," + y + ")"
+		objBoard.appendChild( fond )
+		fondX['lFond' + ( ndx + 1 ) ] = x
+		fondY['lFond' + ( ndx + 1 ) ] = y
+	    }
+
+	    objBigHeart = document.createElementNS( nsSvg,	"use")
+	    objBigHeart.setAttribute('id', 'bigHeart')
+	    objBigHeart.setAttributeNS( nsLnk, "xlink:href",	"#bigH")
+
+	    var objMenuHB = document.createElementNS( nsSvg,	"use")
+	    objMenuHB.setAttribute('id', 'mainMenuHB')
+	    objMenuHB.setAttributeNS( nsLnk, "xlink:href",	"#hamburger")
+	    objMenuHB.addEventListener("click",MenuShowHide,false)
+	    x = ( ndntW + ( gapWx * 3.25 )) * viewX	// #hamburger is 0.75 of gapWx and gapWy
+	    y =   ndntY                     * viewY
+	    objMenuHB.setAttribute("transform", "translate(" + x + "," + y + ")")
+	    objBoard.appendChild( objMenuHB )
+
+	    objMenuMDL = document.createElementNS( nsSvg,	"use")
+	    objMenuMDL.setAttributeNS( nsLnk, "xlink:href",	"#menuModal")
+	    objMenuMDL.addEventListener("click",MenuShowHide,false)
+	    objMenuMDL.setAttribute('transform', 'translate(0,0)')
+
+	    objMenuX = document.createElementNS( nsSvg, "g")
+	    objMenuX.setAttribute('id', 'menuX')
+	    objMenuX.setAttribute('class', 'menuX')
+	    objMenuX.addEventListener("click",function(evt){ MenuOptionProc(evt,menuText.length -1); },false)
+	    x = ( ndntW ) * viewX
+	    y = ( ndntY ) * viewY
+	    objMenuX.setAttribute("transform", "translate(" + x + "," + y + ")")
+	    var rectO = document.createElementNS( nsSvg, "rect")
+	    rectO.setAttribute('width',  menuW + '%')
+	    rectO.setAttribute('height', menuH + '%')
+	    rectO.setAttribute('rx', '18')
+	    rectO.setAttribute('ry', '18')
+	    var rectI = document.createElementNS( nsSvg, "rect")
+	    x = menuW - 0.1
+	    y = menuH - 2
+	    rectI.setAttribute('width',  x + '%')
+	    rectI.setAttribute('height', y + '%')
+	    rectI.setAttribute('class', 'menuR')
+	    y = ( 1 * viewY ) - 1
+	    rectI.setAttribute('transform', 'translate(1,' + y + ')')
+	    objMenuX.appendChild( rectO )
+	    objMenuX.appendChild( rectI )
+
+	    for ( ndx = 0; ndx < menuText.length; ndx++ ) {
+		var oGee = document.createElementNS( nsSvg, "g")
+		oGee.setAttribute('id', 'menuOption' + ndx )
+		switch( ndx ) {
+		    case 0:; oGee.addEventListener("click", function(evt){ MenuOptionProc(evt,0); },false); break
+		    case 1:; oGee.addEventListener("click", function(evt){ MenuOptionProc(evt,1); },false); break
+		    case 2:; oGee.addEventListener("click", function(evt){ MenuOptionProc(evt,2); },false); break
+		    case 3:; oGee.addEventListener("click", function(evt){ MenuOptionProc(evt,3); },false); break
+		    case 4:; oGee.addEventListener("click", function(evt){ MenuOptionProc(evt,4); },false); break
+		}
+
+		oGee.setAttribute('transform', 'translate(1,' + y + ')')
+		var oTxt = document.createElementNS( nsSvg,		"text")
+		oTxt.setAttribute("x", "1.22%")
+		oTxt.setAttribute("y", "5.0%")
+		oTxt.setAttribute("class", "ME")
+		oTxt.appendChild( document.createTextNode( menuText[ ndx ] ))
+		oGee.appendChild( oTxt )
+		var oRct = document.createElementNS( nsSvg, "rect")
+		oRct.setAttribute('width',  menuW + '%')
+		oRct.setAttribute('height', menuO + '%')
+		oRct.setAttribute("class", "menuOption")
+		oGee.appendChild( oRct )
+		objMenuX.appendChild( oGee )
+		y += ( menuO * viewY ) + 1
+	    }
+
+	    var button = document.createElementNS( nsSvg,	"use")
+	    button.setAttribute('id', 'bttnHistB')
+	    button.setAttributeNS( nsLnk, "xlink:href",	"#buttonBph")
+	    x = ( ndntW + ( gapWx * 0 )) * viewX
+	    y = ( ndntY + ( gapF * 3.2 )) * viewY
+	    button.setAttribute("transform", "translate(" + x + "," + y + ")")
+	    objBoard.appendChild( button )
+
+	    button = document.createElementNS( nsSvg,	"use")
+	    button.setAttribute('id', 'bttnHistF')
+	    button.setAttributeNS( nsLnk, "xlink:href",	"#buttonFph")
+	    x = ( ndntW + ( gapWx * 2 ) + 2.5 ) * viewX
+	    y = ( ndntY + ( gapF * 3.2 )) * viewY
+	    button.setAttribute("transform", "translate(" + x + "," + y + ")")
+	    objBoard.appendChild( button )
+
+	    objButtonB = document.createElementNS( nsSvg,	"use")
+	    objButtonB.setAttribute('id', 'bttnHistB')
+	    objButtonB.setAttributeNS( nsLnk, "xlink:href",	"#buttonB")
+	    objButtonB.addEventListener("click",processButton,false)
+	    x = ( ndntW + ( gapWx * 0 )) * viewX
+	    y = ( ndntY + ( gapF * 3.2 )) * viewY
+	    objButtonB.setAttribute("transform", "translate(" + x + "," + y + ")")
+
+	    objButtonF = document.createElementNS( nsSvg,	"use")
+	    objButtonF.setAttribute('id', 'bttnHistF')
+	    objButtonF.setAttributeNS( nsLnk, "xlink:href",	"#buttonF")
+	    objButtonF.addEventListener("click",processButton,false)
+	    x = ( ndntW + ( gapWx * 2 ) + 2.5 ) * viewX
+	    y = ( ndntY + ( gapF * 3.2 )) * viewY
+	    objButtonF.setAttribute("transform", "translate(" + x + "," + y + ")")
+
+	    objScore = document.createElementNS( nsSvg,	"use")
+	    objScore.setAttribute('id', 'scrBx')
+	    objScore.setAttributeNS( nsLnk, "xlink:href",	"#scoreBox")
+	    x = ( ndntW + ( gapWx * 1.35 )) * viewX
+	    y = ( ndntY + ( gapF * 3.2 )) * viewY
+	    objScore.setAttribute("transform", "translate(" + x + "," + y + ")")
+	    objBoard.appendChild( objScore )
+
+	    var suite, numbr
+	    for ( suite = 0;  suite < 4;  suite++) {
+		for ( numbr = 0;  numbr < 13;  numbr++) {
+		    var id = ( suite * 13 ) + numbr
+		    NAMEZ[ id ] = ( nmbrs[ numbr ] + suiteCDSH[ suite ] )
+
+		    var card = document.createElementNS( nsSvg,	"g")
+		    card.setAttribute('id',	id )
+
+		    var face = document.createElementNS( nsSvg,	"use")
+		    face.setAttributeNS( nsLnk, "xlink:href",	"#cardFaceOutline")
+
+		    var usePipS = document.createElementNS( nsSvg,	"use")
+		    usePipS.setAttributeNS( nsLnk, "xlink:href",	"#pip" + suiteCDSH[ suite ] + "Small")
+		    var usePipB = document.createElementNS( nsSvg,	"use")
+		    usePipB.setAttributeNS( nsLnk, "xlink:href",	"#pip" + suiteCDSH[ suite ] + "Big")
+
+		    card.appendChild( face )
+		    card.appendChild( usePipS )
+		    card.appendChild( usePipB )
+		    var txte = document.createElementNS( nsSvg,		"text")
+		    txte.setAttribute("x", "15px")
+		    txte.setAttribute("y", "60px")
+		    txte.setAttribute("class", ( suite % 2 == 0 ? "mediumBlack" : "mediumRed"))
+		    txte.appendChild( document.createTextNode( nmbrz[ numbr ] ))
+		    card.appendChild( txte )
+		    card.addEventListener("click",ping,false)
+		    DECK[ id ] = card
+		    DCKB[ id ] = usePipB
+		    DCKS[ id ] = usePipS
+		    DCKT[ id ] = txte
+		}
+	    }
+
+	    var parms = location.search.substring(1).split('&')
+	    for ( ndx = 0;  ndx < parms.length;  ndx++) {
+		if ( parms[ ndx ] == "demo") {
+		    //
+		    //	PLAY_DEMO is reset to false after demo completes
+		    //
+		    PLAY_DEMO = true
+		} else if ( parms[ ndx ].substr(0,4) == "any=") {
+		    var valus = parms[ ndx ].split('=')
+		    //
+		    //	PARAM_ANY is not reset
+		    //
+		    if ( valus[1] != '' && valus[1] >= 0 ) PARAM_ANY = valus[1]
+		} else if ( parms[ ndx ] == "rnd=0") {
+		    //
+		    //	PARAM_RND is not reset
+		    //
+		    PARAM_RND = 0
+		} else if ( parms[ ndx ] == "rnd=1") {
+		    PARAM_RND = 1
+		}
+	    }
+	    if ( PLAY_DEMO ) playDemo( true )
+	}
+
+	function emptyWaste() {
+	    var ndx
+	    for ( ndx = 0; ndx < waste3.length; ndx++ ) {
+		if ( waste3[ ndx ] != undefined ) {
+		    objBoard.removeChild( waste3[ ndx ] )
+		    waste3[ ndx ] = undefined
+		}
+	    }
+	}
+
+	function manageScore( valu ) {
+	    objBoard.removeChild( objScore )
+	    if ( valu == undefined ) {
+		objScoreText.childNodes[0].data = ''
+	    } else {
+		SCORE += valu
+		if ( SCORE < 0 ) SCORE = 0
+		objScoreText.childNodes[0].data = SCORE
+	    }
+	    objBoard.appendChild( objScore )
+	}
+
+	function manageButtons( isBack, isAdd, move ) {
+	    if ( DEBUG ) console.log('manageButtons: isBack: ' + isBack + ', histB: ' + histB.join())
+	    if ( DEBUG ) console.log('isAdd: ' + isAdd + ', move: ' + move + ', histF: ' + histF.join())
+
+	    var rtrn = isAdd ? move : NOMUV
+	    if ( isBack ) {
+		if ( isAdd ) {
+		    histB.push( move )
+		} else if ( histB.length > 0 ) {
+		    if ( move == NOMUV ) {
+			while ( histB.length > 0 ) histB.pop()
+		    } else {
+			rtrn = histB.pop()
+		    }
+		    if ( histB.length == 0 ) objBoard.removeChild( objButtonB )
+		}
+		if ( histB.length > 0 ) {
+		    if ( histB.length > 1 ) objBoard.removeChild( objButtonB )
+		    objButtonTextB.childNodes[0].data = histB.length
+		    objBoard.appendChild( objButtonB )
+		}
+	    } else {
+		if ( isAdd ) {
+		    histF.unshift( move )
+		} else if ( histF.length > 0 ) {
+		    if ( move == NOMUV ) {
+			while ( histF.length > 0 ) histF.pop()
+		    } else {
+			rtrn = histF.shift()
+		    }
+		    if ( histF.length == 0 ) objBoard.removeChild( objButtonF )
+		}
+		if ( histF.length > 0 ) {
+		    if ( histF.length > 1 ) objBoard.removeChild( objButtonF )
+		    objButtonTextF.childNodes[0].data = histF.length
+		    objBoard.appendChild( objButtonF )
+		}
+	    }
+	    return( rtrn )
+	}
+
+	function clearAnimation() {
+	    while ( HOLDER.length > 0 ) {
+		var hld = HOLDER.pop()
+		var ray = MOTIAN.pop()
+
+		while ( ray.length > 0 ) {
+		    var chl = ray.pop()
+		    hld.removeChild( chl )
+		}
+	    }
+	}
+
+	function makeCardBack() {
+	    var len =  10 + ( Math.random() * 10 )
+	    var ln2 = ( 2 + ( Math.random() *  1 )) * len
+
+	    objDefs.removeChild( objPttrn )
+	    objPttrn = document.createElementNS(nsSvg, "pattern")
+	    objPttrn.setAttribute("id", "pattern1")
+	    objPttrn.setAttribute("patternUnits", "userSpaceOnUse")
+	    var rect = document.createElementNS(nsSvg, "rect")
+	    rect.setAttribute("id", "pattern1R")
+	    var circ = document.createElementNS(nsSvg, "circle")
+	    circ.setAttribute("id", "pattern1C")
+	    circ.setAttribute("cx", len )
+	    circ.setAttribute("cy", len )
+	    circ.setAttribute("r" , len )
+	    circ.style.stroke = "none"
+
+	    if (( Math.floor( len ) % 2 ) == 0 ) {
+		objPttrn.setAttribute("x", ( ln2 / 2 ))
+		objPttrn.setAttribute("y", ( ln2 / 2 ))
+		objPttrn.setAttribute("width" , ln2 )
+		objPttrn.setAttribute("height", ln2 )
+
+		rect.setAttribute("width" , ln2 )
+		rect.setAttribute("height", ln2 )
+		rect.style.fill = BINARY1[ BINARY_NDX ]
+
+		circ.style.fill = BINARY2[ BINARY_NDX ]
+	    } else {
+		var el2 = len + len
+		objPttrn.setAttribute("x", len )
+		objPttrn.setAttribute("y", len )
+		objPttrn.setAttribute("width" , el2 )
+		objPttrn.setAttribute("height", el2 )
+
+		rect.setAttribute("width" , el2 )
+		rect.setAttribute("height", el2 )
+		rect.style.fill = BINARY1[ BINARY_NDX ]
+
+		circ.style.fill = BINARY2[ BINARY_NDX ]
+	    }
+
+	    objPttrn.appendChild(rect)
+	    objPttrn.appendChild(circ)
+	    if (( Math.floor( ln2 ) % 2 ) == 0 )
+		objPttrn.setAttribute("patternTransform", "rotate(45)")
+	    objDefs.appendChild( objPttrn )
+
+	    var back1 = document.createElementNS( nsSvg, "g")
+	    back1.setAttribute('id', 'back1')
+	    var cbo = document.createElementNS( nsSvg, "use")
+	    cbo.setAttributeNS( nsLnk, "xlink:href",   "#cardBackOutline")
+	    back1.appendChild( cbo )
+	    back1.style.fill = "url(#pattern1)"
+	    objDefs.appendChild( back1 )
+	}
+
+	function wipeBoard() {
+	    var col, row, card
+	    newCandy( histB.length == 0 && histF.length == 0 )
+	    manageButtons( true,  false, NOMUV )
+	    manageButtons( false, false, NOMUV )
+	    while ( histD.length > 0 ) histD.pop()
+	    while ( histL.length > 0 ) histL.pop()
+	    FLIPS = 0
+	    GOVER = false
+	    MOVES = 0
+	    SCORE = 0
+	    TIMER = new Date().getTime()
+	    manageScore()
+	    makeCardBack()
+
+	    for ( col = 0; col < LAYOUT.length; col++ ) {
+		for ( row = 1; row < LAYOUT[ col ].length; row++ ) {
+		    if ( LAYOUT[ col ][ row ] != undefined ) {
+			if ( sltKez[ col ] != 'lStock' && sltKez[ col ] != 'lWaste') {
+			    card = CARDS[ LAYOUT[ col ][ row ] ]
+			    if ( card.getAttribute('faceUp') == '0') {
+				objBoard.removeChild( crdBck[ col ][ row ] )
+			    } else {
+				card.setAttribute('faceUp', '0')
+				objBoard.removeChild( card )
+			    }
+			}
+			LAYOUT[ col ][ row ] = undefined
+		    }
+		}
+	    }
+	    lStock[0] = lWaste[0] = undefined	// todo: c.f. "one off cleanup"
+	    emptyWaste()
+	    clearAnimation()
+	}
+
+	function repaintStock() {
+	    var ndx, stop
+	    if ( DEBUG ) console.log('lStock: ' + lStock.join() + ' lWaste: ' + lWaste.join())
+	    if ( lStock[0] == undefined && pHoldS[ 1 ].getAttribute('faceUp') == '1') {
+		//
+		//	restart stock, i.e., another round
+		//
+		objBoard.removeChild( pHoldS[ 1 ] )
+		pHoldS[ 1 ].setAttribute('faceUp', 0 )
+		pHoldS[ 2 ].setAttribute('faceUp', 1 )
+	    }
+
+	    emptyWaste()
+
+	    for ( stop = 0; stop < lWaste.length; stop++ ) {
+		if ( lWaste[ stop ] != undefined ) break
+	    }
+
+	    for ( ndx = lWaste.length -1; ndx >= 0; ndx-- ) {
+		if ( lWaste[ ndx ] != undefined ) break
+	    }
+	    if ( ndx - stop < 3 && lStock[0] != undefined ) {
+		//
+		//	3 or fewer cards on waste, none on stock
+		//
+		// TODO: disable pHoldS[ 2 ] restart stock
+	    }
+
+	    ndx = ( stop + 2 < ndx ?  stop + 2 : ndx )
+	    for ( ; ndx >= stop; ndx-- ) {
+		var eze = ndx - stop
+		waste3[ eze ] = CARDS[ lWaste[ ndx ] ]
+		waste3[ eze ].setAttribute('transform', wastXY[ 2 - eze ] )
+		waste3[ eze ].setAttribute('faceUp', 1 )
+		waste3[ eze ].setAttribute('slot', kezSlt['lWaste'] )
+
+		objBoard.appendChild( waste3[ eze ] )
+	    }
+	}
+
+	function flip3Test(flipType, testHist ) {
+	    var ndx, stop
+	    var max = ( 0 - ( flipType == FLIPA ? FLPM3 : flipType )) - 1
+	    for ( ndx = lStock.length -1; ndx >= 0; ndx-- ) {
+		if ( lStock[ ndx ] != undefined ) break
+	    }
+
+	    stop = ( ndx - max >= 0 ?  ndx - max : 0 )
+	    //
+	    //	less than 3 cards left on lStock[]
+	    //
+	    flipType = ( flipType == FLIPA ? FLIPA : ( -1 - ( ndx - stop )))
+	    for ( ; ndx >= stop; ndx-- ) {
+		lWaste[ndx] = lStock[ndx]
+		lStock[ndx] = undefined
+	    }
+	    repaintStock()
+	    if ( testHist ) {
+		var redo = manageButtons( false, false, undefined )
+		//
+		//	starting a new path
+		//
+		if ( flipType != redo ) manageButtons( false, false, NOMUV )
+	    }
+	    manageButtons( true, true, flipType )
+
+	    if ( flipType != FLIPA ) MOVES++
+	}
+
+	function flip3(flipType) {
+	    flip3Test( flipType, true )
+	}
+
+	function flipAgain(testHist) {
+	    //
+	    //	3 or less available cards on waste, no need to flip
+	    //
+	    if ( lStock[ 0 ] == undefined && lWaste[ 3 ] == undefined ) return
+
+	    objBoard.appendChild( pHoldS[ 1 ] )
+	    pHoldS[ 2 ].setAttribute('faceUp', 0 )
+	    pHoldS[ 1 ].setAttribute('faceUp', 1 )
+
+	    var ndx
+	    var xdn = 0
+	    for ( ndx = 0; ndx < lStock.length; ndx++ ) {
+		lStock[ndx] = undefined
+		if ( lWaste[ndx] == undefined ) continue
+
+		lStock[ xdn++ ] = lWaste[ndx]
+		lWaste[ndx] = undefined
+	    }
+	    flip3Test( FLPM3, testHist )
+
+	    FLIPS++
+	    if ( FLIPS > FLIPF ) manageScore( SC_FP )
+	}
+
+	function unFlip3(flipType) {
+	    var ndx, stop
+	    var max = ( 0 - ( flipType == FLIPA ? FLPM3 : flipType ))
+	    if ( lStock[0] == undefined && pHoldS[ 2 ].getAttribute('faceUp') == '1') {
+		//
+		//	UNDO restart stock, i.e., another round
+		//
+		objBoard.appendChild( pHoldS[ 1 ] )
+		pHoldS[ 1 ].setAttribute('faceUp', 1 )
+		pHoldS[ 2 ].setAttribute('faceUp', 0 )
+	    }
+
+	    for ( ndx = 0; ndx < lWaste.length; ndx++ ) {
+		if ( lWaste[ ndx ] != undefined ) break
+	    }
+
+	    stop = ( ndx + max >= lWaste.length ?  lWaste.length : ndx + max )
+	    for ( ; ndx < stop; ndx++ ) {
+		lStock[ndx] = lWaste[ndx]
+		lWaste[ndx] = undefined
+	    }
+
+	    if ( flipType != FLIPA ) {
+		var isEmpty = true
+		for ( ndx = 0; ndx < lWaste.length; ndx++ ) {
+		    if ( lWaste[ ndx ] != undefined ) {
+			isEmpty = false
+			break
+		    }
+		}
+		if ( isEmpty ) {
+		    for ( ndx = 0; ndx < lWaste.length; ndx++ ) {
+			lWaste[ndx] = lStock[ndx]
+			lStock[ndx] = undefined
+		    }
+
+		    if ( FLIPS > FLIPF ) manageScore( 0 - SC_FP )
+		    FLIPS--
+		}
+		MOVES++
+	    }
+
+	    repaintStock()
+	    manageButtons( false, true, flipType )
+	}
+
+	function restart() {
+	    if ( CARDS[ 0 ] == undefined ) return
+
+	    TRYS++
+	    clearAnimation()
+
+	    var ndx, col, card
+	    var ray = new Array(52)
+	    var max = kezSlt['lStock']
+
+	    for ( ndx = 0;  ndx < 52;  ndx++) {
+		card = CARDS[ ndx ]
+		var slot = ( ndx < 28 ) ? LAME1[ ndx ] : max
+		var sPos = ( ndx < 28 ) ? LAME2[ ndx ] : ( ndx - 28 )
+		card.setAttribute('slot',	 slot )
+		card.setAttribute('slotPos',	 sPos )
+		card.setAttribute('cNdx',	 ndx )
+		LAYOUT[ slot ][ sPos ] = ndx
+		ray[ ndx ] = card.getAttribute('id')
+
+		if ( slot < max && ( slot + 1 ) == sPos ) {
+		    card.setAttribute('faceUp',	1 )
+		} else {
+		    card.setAttribute('faceUp',	0 )
+		}
+	    }
+
+	    DEAL = ray.join()
+	    console.log( DEAL )
+	    if ( DEBG3 ) histL.push( DEAL )
+
+	    for ( col = 0; col < 7; col++ ) repaintTbl(col, 1)
+
+	    if ( pHoldS[ 0 ].getAttribute('faceUp') == '1') {
+		//
+		//	only occurs when the menu is used before a game is started
+		//	by clicking on pHoldS[ 0 ]  --- the usual way
+		//
+		objBoard.removeChild( pHoldS[ 0 ] )
+		objBoard.appendChild( pHoldS[ 1 ] )
+		pHoldS[ 0 ].setAttribute('faceUp', 0 )
+		pHoldS[ 1 ].setAttribute('faceUp', 1 )
+	    }
+	    if ( pHoldS[ 1 ].getAttribute('faceUp') == '0') {
+		objBoard.appendChild( pHoldS[ 1 ] )
+		pHoldS[ 1 ].setAttribute('faceUp', 1 )
+	    }
+
+	    if ( histF.length > 0 ) {
+		objButtonTextF.childNodes[0].data = histF.length
+		objBoard.appendChild( objButtonF )
+	    }
+
+	    histL.push( DEAL )
+	    if ( DEBG3 ) histL.push( snapShot( LAYOUT, undefined, CARDS, CARDZ ))
+	    flip3(FLIPA)
+	}
+
+	function randomize(cnt) {
+	    //
+	    //	assumes cnt < mod
+	    //
+	    var ndx
+	    var mod = 100
+	    var rnd = new Array(cnt)
+
+	    for ( ndx = 0;  ndx < cnt;  ndx++) rnd[ndx] = ( Math.round( Math.random() * 10000000 ) * mod ) + ndx
+	    rnd.sort( function(a, b){ return( a - b ) } )
+	    for ( ndx = 0;  ndx < cnt;  ndx++) rnd[ndx] = ( rnd[ndx] % mod )
+
+	    return(rnd)
+	}
+
+	function moveValue( fromSlotNum,  toSlotNum, toPos, autoFaceUp ) {
+	    return( fromSlotNum * 10000 + toSlotNum * 100 + toPos - 1 + ( autoFaceUp ? AUTUP : 0 ))
+	}
+
+	function snapShot(lout, faceUp, cards, cardz ) {
+	    var strng = ''
+
+	    var ndx, xdn, card
+	    var fup = new Array()
+	    var nam = new Array()
+	    var myLO = new Array()
+	    for ( ndx = 0; ndx < lout.length; ndx++ ) {
+		var ray = lout[ndx]
+		var roy = new Array()
+		var rey = new Array()
+		var rez = new Array()
+		for ( xdn = 0; xdn < ray.length; xdn++ ) {
+		    if ( ray[ xdn ] == undefined ) {
+			roy.push(undefined)
+			if ( ndx < 7 ) rey.push(undefined)
+			rez.push(undefined)
+		    } else if ( ray[ xdn ] == -1 ) {
+			roy.push(-1)
+			if ( ndx < 7 ) rey.push('x')
+			rez.push(-1)
+		    } else {
+			var crd = (( cardz == undefined ) ? ray[ xdn ] : cardz[ ray[ xdn ] ] )
+			roy.push( crd )
+			rez.push( NAMEZ[ crd ] )
+
+			if ( faceUp == undefined ) {
+			    card = cards[ ray[ xdn ] ]
+			    if ( ndx < 7 ) rey.push( card.getAttribute('faceUp'))
+			} else {
+			    if ( ndx < 7 ) rey.push( faceUp[ ray[ xdn ] ] )
+			}
+		    }
+		}
+
+		if ( ndx < 7 ) fup.push( rey )
+		nam.push( rez )
+		myLO.push( roy )
+	    }
+
+	    for ( ndx = 0; ndx <  fup.length; ndx++ ) strng += 'fup: ' + ndx + ', ' +  fup[ndx].join() + '\n'
+	    for ( ndx = 0; ndx <  nam.length; ndx++ ) strng += 'nam: ' + ndx + ', ' +  nam[ndx].join() + '\n'
+	    for ( ndx = 0; ndx < myLO.length; ndx++ ) strng += 'ndx: ' + ndx + ', ' + myLO[ndx].join() + '\n'
+
+	    return( strng )
+	}
+
+	function findWinner( loops, diagDone ) {
+	    //
+	    //	diagDone: print diagnostics on success
+	    //
+	    var ndx, xdn, ray, col, pos, tbl, tNdx, tPos, dck, nmbr, fonds, fNdx, fPos, cntrc, suit, tab, nu, su, toComplete, autoFaceUp
+	    var myHist = new Array()
+	    var stock = [ kezSlt['lStock'], kezSlt['lWaste'] ]
+	    var found = [ kezSlt['lFond1'], kezSlt['lFond2'], kezSlt['lFond3'], kezSlt['lFond4'] ]
+	    var table = [ kezSlt['lTabl1'], kezSlt['lTabl2'], kezSlt['lTabl3'], kezSlt['lTabl4'],
+			  kezSlt['lTabl5'], kezSlt['lTabl6'], kezSlt['lTabl7'] ]
+
+	    var cmplt = [ false, false, false, false, false, false, false ]
+
+	    var lTops = [  0,        0,        0,         0,         0,         0,         0,
+			  -1,       -1,        0,         0,         0,         0           ]
+
+	    var lVals = [ -1,       -1,       -1,        -1,        -1,        -1,        -1,
+			  -1,       -1,       -1,        -1,        -1,        -1           ]
+
+	    var myLO = new Array( LAYOUT.length )
+	    for ( ndx = 0; ndx < LAYOUT.length; ndx++ ) {
+		myLO[ ndx ] = new Array( LAYOUT[ndx].length )
+		myLO[ ndx ][0] = -1
+	    }
+	    var myStock = myLO[ stock[0] ]
+	    var myWaste = myLO[ stock[1] ]
+	    myStock[0] = myWaste[0] = undefined	// todo: c.f. "one off cleanup"
+
+	    var fSuit = randomize(4)
+	    for ( ndx = 0; ndx < 4; ndx++ ) {
+		col = found[ ndx ]
+		lTops[ col ] = 13
+		ray = myLO[ col ]
+		for ( xdn = 0; xdn < 13; xdn++ ) {
+		    ray[ xdn +1 ] = xdn + ( fSuit[ ndx ] * 13 )
+		}
+		lVals[ col ] = ray[ 13 ]
+	    }
+
+	    for ( ndx = 0; ndx < 7; ndx++ ) {
+		col = table[ ndx ]
+		lTops[ col ] =  0
+		lVals[ col ] = -1
+	    }
+	    var strng
+	    var histry = new Array()
+
+	    var removed = [ false, false, false, false, false, false, false ]
+		  cmplt = [ false, false, false, false, false, false, false ]
+
+	    var  faceUp = new Array(52)
+	    for ( ndx = 0; ndx < 52; ndx++ ) faceUp[ndx] = 1
+
+	    var kase = [ 0, 0, 0, 0, 0, 0 ]
+	    var tmpt = [ 0, 0, 0, 0, 0, 0 ]
+	    //
+	    //	this will cut-out the stock/waste movements when stock/waste is full
+	    //
+	    var kOff = 0
+	    var swCnt = (( lVals[ stock[1] ] == -1 ) ? 0 : 1 )
+
+	    var reps = 0
+	    var hmf  = 0
+	    var diags = ( DEBG2 || DEBUG )
+	    var tab1Ndx = kezSlt['lTabl1']
+
+	    var howManyFound = WIMIN + Math.floor(Math.random() * WINUP )
+	    if ( diags || diagDone ) histry.push('howManyFound: ' + howManyFound + '\n')
+
+	    var fatalError = false
+	    var lastSuccess = 0
+	    var maxGap = 0
+	    var deadlock = 0
+	    var onFound = 52
+	    var last1 = -1
+	    var last2 = -1
+	    while ( ! fatalError && reps <= loops && cmplt.indexOf(false) >= 0 ) {
+		//
+		//	based on a small sample of games.
+		//	todo: need more empirical data.
+		//
+		var id = Math.floor(Math.random() * 100 )
+		if ( false ) {
+		    // nop						//	alt
+		} else if ( id <  34 ) {				//	37	34
+		    id = 0		// unFlip3()
+		} else if ( id <  36 ) {				//	46	36
+		    id = 1		// foundation -> waste
+		} else if ( id <  46 ) {				//	62	42
+		    id = 2		// tableau    -> waste
+		} else if ( id <  49 ) {				//	63	45
+		    id = 3		// tableau    -> foundation
+		} else if ( id <  73 ) {				//	80	63
+		    id = 4		// foundation -> tableau
+		} else if ( id < 100 ) {
+		    id = 5		// tableau    -> tableau
+		} else {
+		    // nop
+		}
+		if ( id <  kOff ) continue
+		if ( onFound  ==  0 && ( id == 1 || id == 4 )) continue
+		if ( deadlock == 15 && id == 4 ) continue
+		if ( last1 != 4 ) id = 4
+		if ( id == last1 ) continue
+		last1 = id
+
+		//
+		//	Focus on face up cards on tableau and front-loading the population of waste
+		//
+		if ( hmf < howManyFound && onFound > 0 && (( deadlock != 15 && id != 4 ) && id > 1 )) id = 4
+if ( reps > 400 ) {
+    DEBUG = DEBUG
+}
+		var move = -1
+		reps++
+		tmpt[id]++
+		var allDone = false
+		switch( id ) {
+		    case 0:
+			//
+			//	case 9: shift 3 cards from waste to stock
+			//
+			pos = lTops[ stock[1] ]
+			var pas = pos -1
+			if ( pos == -1 ) break
+			ndx = ( myWaste.length - 1 )
+			while ( ndx > pos && myWaste[ ndx ] == undefined ) ndx--
+			if (( ndx - pos ) < 2 || ((( ndx - pos ) == 2 ) && myWaste[0] == undefined )) {
+			    break
+			} else if (( ndx - pos ) == 2 ) {
+			    //
+			    //	reversing flipAgain() :
+			    //
+			    //	"lStock: ,,,,,,,,,,,,,,,,,,,,,,, lWaste: 28,29,30,31,32,33,35,36,37,,,,,,,,,,,,,,,"
+			    //	"lStock: 28,29,30,31,32,33,,,,,,,,,,,,,,,,,, lWaste: ,,,,,,,35,36,37,,,,,,,,,,,,,,"
+			    //
+			    while ( pas != -1 ) {
+				myWaste[ --pos ] = myStock[pas]
+				myStock[ pas-- ] = undefined
+			    }
+			    move = -3
+			} else {
+			    //
+			    //	reversing flip3() :
+			    //
+			    //	"lStock: 28,29,30,31,32,33,,,,,,,,,,,,,,,,,, lWaste: ,,,,,,35,36,37,,,,,,,,,,,,,,,"
+			    //	"lStock: 28,29,30,,,,,,,,,,,,,,,,,,,,, lWaste: ,,,31,32,33,35,36,37,,,,,,,,,,,,,,,"
+			    //
+			    for ( ndx = 0; ndx < 3; ndx++ ) {
+				myStock[ ++pas ] = myWaste[pos]
+				myWaste[ pos++ ] = undefined
+			    }
+			    move = (( myWaste[ pos ] == undefined ) ? -6 : -3 )
+			}
+			lTops[ stock[1] ] = pos
+			allDone = true
+			break
+
+		    case 1:
+			//
+			//	case 9: found -> waste
+			//
+
+			fonds = randomize(4)
+			cntrc = ( hmf < howManyFound ) ? WCTRC : 4
+			for ( ndx = 0; ndx < cntrc; ndx++ ) {
+			    fNdx = found[ fonds[ ndx ] ]
+			    fPos = lTops[ fNdx ]
+
+			    if ( fPos > 1 ) {
+				swCnt++
+				if ( swCnt == 24 ) kOff = 3
+
+				pos = lTops[ stock[1] ]
+				if ( pos == -1 ) {
+				    pos = 0
+				} else if ( myWaste[ pos ] != undefined ) {
+				    pos = myWaste.length -1
+				    while ( pos > 1 && myWaste[ pos -1 ] == undefined ) pos--
+				    while ( pos > 0 && myWaste[ pos -1 ] != undefined ) myWaste[ pos ] = myWaste[ --pos ]
+				}
+				move = moveValue( sltWasteNum, fNdx, fPos, false )
+				lTops[ stock[1] ] = pos
+				myWaste[ lTops[ stock[1] ] ] = lVals[ fNdx ]
+				myLO[ fNdx ][ fPos ] = undefined
+				lTops[ fNdx ]--
+				lVals[ fNdx ] = myLO[ fNdx ][ lTops[ fNdx ] ]
+				onFound--
+				deadlock = 0
+				allDone = true
+				break
+			    }
+			}
+			break
+
+		    case 2:
+			//
+			//	case 9: tableau -> waste
+			//
+
+			tbl = randomize(7)
+			for ( ndx = 0; ndx < 7; ndx++ ) {
+			    tab  = tbl[ ndx ]
+			    tNdx = table[ tab ]
+			    tPos = lTops[ tNdx ]
+			    if ( tPos < 1 ) continue						// no cards
+
+			    dck = lVals[ tNdx ]
+			    nmbr = ( dck % 13 )
+
+			    //
+			    //	A non-king can not be put on the first tableau position
+			    //
+			    if ( tPos == 1 && nmbr != 12 ) continue
+
+			    //
+			    //	an Ace or Duece would 'never' be moved from found -> tableau
+			    //	so, should not be reversed: tableau -> found
+			    //
+			    if ( nmbr < 3 ) continue
+
+			    if ( cmplt[ tab ] ) {
+				//
+				//	only cards appended to a complete tableau can be removed
+				//
+				if ( tPos < ( tNdx + 2 )) continue
+			    } else if ( removed[ tab ] ) {
+				if ( tPos > 1 ) {
+				    ray = myLO[ tNdx ]
+				    //
+				    //	the tableau is being restored to the starting position
+				    //
+				    if ( faceUp[ ray[ tPos -1 ] ] == 0 ) continue
+				}
+			    } else if ( tPos == 1 ) {
+				removed[ tab ] = true
+			    }
+
+			    swCnt++
+			    if ( swCnt == 24 ) kOff = 3
+
+			    pos = lTops[ stock[1] ]
+			    if ( pos == -1 ) {
+				pos = 0
+			    } else if ( myWaste[ pos ] != undefined ) {
+				pos = myWaste.length -1
+				while ( pos > 1 && myWaste[ pos -1 ] == undefined ) pos--
+				while ( pos > 0 && myWaste[ pos -1 ] != undefined ) myWaste[ pos ] = myWaste[ --pos ]
+			    }
+			    move = moveValue( sltWasteNum, tNdx, tPos, false )
+			    lTops[ stock[1] ] = pos
+			    myWaste[ lTops[ stock[1] ] ] = lVals[ tNdx ]
+			    myLO[ tNdx ][ tPos ] = undefined
+			    lTops[ tNdx ]--
+
+			    lVals[ tNdx ] = myLO[ tNdx ][ lTops[ tNdx ] ]
+			    deadlock = 0
+			    allDone = true
+			    break
+			}
+
+			break
+
+		    case 3:
+			//
+			//	case 9: tableau -> found
+			//	reverses found -> tableau, a tactical move
+			//
+			tbl = randomize(7)
+			for ( ndx = 0; ( ! allDone && ndx < 7 ); ndx++ ) {
+			    tNdx = table[ tbl[ ndx ] ]
+			    tPos = lTops[ tNdx ]
+			    if ( tPos < 1 ) continue				// no cards
+
+			    dck = lVals[ tNdx ]
+			    nmbr = ( dck % 13 )
+
+			    //
+			    //	A non-king can not be put on the first tableau position
+			    //
+			    if ( tPos == 1 && nmbr != 12 ) continue
+
+			    //
+			    //	an Ace or Duece would 'never' be moved from found -> tableau
+			    //	so, should not be reversed: tableau -> found
+			    //
+			    if ( nmbr < 3 ) continue
+
+			    //
+			    //	the tableau is being rebuilt
+			    //
+			    if ( cmplt[ tbl[ ndx ] ] ) {
+				//
+				//	only cards appended to a complete tableau can be removed
+				//
+				if ( tPos < ( tNdx + 2 )) continue
+			    } else if ( removed[ tbl[ ndx ] ] ) {
+				if ( tPos  > 1 ) {
+				    ray = myLO[ tNdx ]
+				    //
+				    //	the tableau is being restored to the starting position
+				    //
+				    if ( faceUp[ ray[ tPos -1 ] ] == 0 ) continue
+				}
+			    }
+
+			    suit = Math.floor( dck / 13 )
+
+			    fonds = randomize(4)
+			    for ( xdn = 0; ( ! allDone && xdn < 4 ); xdn++ ) {
+				fNdx = found[ fonds[ xdn ] ]
+				if ( lTops[ fNdx ] < 2 ) continue
+
+				nu =           ( lVals[ fNdx ] % 13 )
+				su = Math.floor( lVals[ fNdx ] / 13 )
+
+				if ( nmbr == nu + 1 && suit == su ) {
+
+				    if ( tPos == 1 ) removed[ tbl[ ndx ] ] = true
+
+				    move = moveValue( fNdx, tNdx, tPos, false )
+				    myLO[ tNdx ][ tPos ] = undefined
+				    lTops[ tNdx ]--
+
+				    lVals[ tNdx ] = myLO[ tNdx ][ lTops[ tNdx ] ]
+
+				    lVals[ fNdx ] = dck
+				    lTops[ fNdx ]++
+				    myLO[ fNdx ][ lTops[ fNdx ] ] = dck
+				    onFound++
+
+				    deadlock = 0
+				    allDone = true
+				}
+			    }
+			}
+			break
+
+		    case 4:
+			//
+			//		tableau -> found	- normal completion move
+			//	case 9: found -> tableau	- which could reset the tableau as complete
+			//
+
+			fonds = randomize(4)
+			cntrc = ( hmf < howManyFound ) ? WCTRC : 4
+			for ( xdn = 0; ( ! allDone && xdn < cntrc ); xdn++ ) {
+			    fNdx = found[ fonds[ xdn ] ]
+			    deadlock = deadlock | ( 1 << xdn )
+			    var lastRemovable = -1
+
+			    fPos = lTops[ fNdx ]
+			    if ( fPos  < 1 ) continue
+			    dck = lVals[ fNdx ]
+			    nmbr = ( dck % 13 )
+			    suit = Math.floor( dck / 13 )
+
+			    tbl = randomize(7)
+			    autoFaceUp = false
+			    for ( ndx = 0; ( ! allDone && ndx < 7 ); ndx++ ) {
+				tab  = tbl[ ndx ]
+				tNdx = table[ tab ]
+				tPos = lTops[ tNdx ]
+				ray = myLO[ tNdx ]
+
+				if ( tPos == 0 ) {
+				    //
+				    //	If a tableau is 'removed', no card put on position 1 can be removed
+				    //
+				    removed[ tab ] = ( nmbr != 12 )
+
+				    if ( tNdx == tab1Ndx && removed[ tab ] ) cmplt[ tab ] = true
+histry.push('\n\n\nremoved: ' + removed[ ndx ] + ', reps: ' + reps + '\n\n\n')
+				    allDone = true
+				} else {
+				    if ( tPos == 1 && ! cmplt[ tab ] ) lastRemovable = tab
+
+				    //
+				    //	todo: && ( reps % 7 < 5 )
+				    //
+				    toComplete = ( removed[ tab ] && ! cmplt[ tab ]
+					&& ( tPos == 1 || faceUp[ ray[ tPos -1 ] ] == 0 ))
+
+				    //
+				    //	An Ace is 'never' put on a tableau 'progression
+				    //
+				    if ( nmbr > 0 ) {
+					nu =           ( lVals[ tNdx ] % 13 )
+					su = Math.floor( lVals[ tNdx ] / 13 )
+					allDone = ( nmbr == nu - 1 && suit % 2 != su % 2 )
+				    }
+
+				    if ( ! allDone && toComplete ) {
+					faceUp[ ray[ tPos ] ] = 0
+					autoFaceUp = true
+
+					if ( tPos == tNdx ) cmplt[ tbl[ ndx ] ] = true
+					allDone = true
+				    }
+				}
+				if ( allDone ) {
+				    if ( hmf < howManyFound ) hmf++
+				    deadlock = 0
+				    move = moveValue( tNdx, fNdx, fPos, autoFaceUp )
+				    var roy = myLO[ fNdx ]
+				    roy[ lTops[ fNdx ] ] = undefined
+				    lTops[ fNdx ]--
+				    lVals[ fNdx ] = roy[ lTops[ fNdx ] ]
+
+				    lVals[ tNdx ] = dck
+				    lTops[ tNdx ]++
+				    ray[ lTops[ tNdx ] ] = dck
+				    onFound--
+				} else if ( deadlock == 15 ) {
+				    if ( lastRemovable == -1 ) {
+					hmf = howManyFound
+				    } else {
+histry.push('\n\n\nlastRemovable: ' + lastRemovable + ', reps: ' + reps + '\n\n\n')
+					removed[ lastRemovable ] = true
+					if ( tNdx == tab1Ndx ) cmplt[ lastRemovable ] = true
+					deadlock = 0
+				    }
+				}
+			    }
+			}
+			break
+
+		    case 5:
+			//
+			//	case 9: tableau -> tableau
+			//	can be more than ONE card
+			//
+			var ables = randomize(7)
+			for ( xdn = 0; ( ! allDone && xdn < 7 ); xdn++ ) {
+			    var fab = ables[ xdn ]
+			    var fCom = cmplt[ fab ]
+			    fNdx = table[ fab ]
+			    fPos = lTops[ fNdx ]
+			    var fRem = removed[ fab ]
+			    if ( fPos < 1 ) continue
+
+			    //
+			    //	the tableau is being rebuilt
+			    //
+			    if ( fCom ) {
+				//
+				//	only cards appended to a complete tableau can be removed
+				//
+				if ( fPos < ( fNdx + 2 )) continue
+			    } else if ( fRem ) {
+				if ( fPos == 1 ) continue			// 'dealt' card
+				if ( fPos  > 1 ) {
+				    ray = myLO[ fNdx ]
+				    //
+				    //	the tableau is being restored to the starting position
+				    //
+				    if ( faceUp[ ray[ fPos -1 ] ] == 0 ) continue
+				}
+			    }
+
+			    var lowest = fPos
+			    ray = myLO[ fNdx ]
+			    for ( ; lowest > 0; lowest-- ) {
+				if ( faceUp[ ray[ lowest ] ] == 0 ) break
+			    }
+			    lowest++
+
+			    //
+			    //	the tableau is OR is being completed
+			    //
+			    if ( fRem )  lowest++
+			    if ( lowest > fPos ) continue
+
+			    lowest += Math.floor(Math.random() * ( 1 + fPos - lowest ))
+
+			    dck = ray[ lowest ]
+			    nmbr = ( dck % 13 )
+
+			    //
+			    //	an Ace is 'never' put on a tableau
+			    //
+			    if ( nmbr == 0 ) continue
+			    suit = Math.floor( dck / 13 )
+
+			    toComplete = (( reps % 2 ) == 0 )
+			    autoFaceUp = false
+			    tbl = randomize(7)
+			    for ( ndx = 0; ( ! allDone && ndx < 7 ); ndx++ ) {
+				tab = tbl[ ndx ]
+				tNdx = table[ tab ]
+				if ( fNdx == tNdx ) continue
+				tPos = lTops[ tNdx ]
+				ray = myLO[ tNdx ]
+
+				if ( tPos == 0 && nmbr != 12 ) continue
+				//
+				//	silly move: do not move king from pos 0 to another pos 0
+				//
+				if ( tPos == 0 && lowest == 1 && nmbr == 12 ) continue
+
+				if ( tPos == 0 ) {
+				    if ( tNdx == tab1Ndx && removed[ tab ] ) cmplt[ tab ] = true
+				    allDone = true
+				} else {
+				    //
+				    //	todo: && ( reps % 7 < 5 )
+				    //
+				    toComplete = ( removed[ tab ] && ! cmplt[ tab ]
+					&& ( tPos == 1 || faceUp[ ray[ tPos -1 ] ] == 0 ))
+
+				    //
+				    //	An Ace is 'never' put on a tableau 'progression
+				    //
+				    if ( nmbr > 0 ) {
+					nu =           ( lVals[ tNdx ] % 13 )
+					su = Math.floor( lVals[ tNdx ] / 13 )
+					allDone = ( nmbr == nu - 1 && suit % 2 != su % 2 )
+				    }
+
+				    if ( ! allDone && toComplete ) {
+					faceUp[ ray[ tPos ] ] = 0
+					autoFaceUp = true
+
+					if ( tPos == tNdx ) cmplt[ tbl[ ndx ] ] = true
+					allDone = true
+				    }
+				}
+				if ( allDone ) {
+				    if ( diags || diagDone )
+					    histry.push('55555: tNdx: ' + tNdx + ', tPos: ' + lTops[ tNdx ] + ', fNdx: ' + fNdx + ', fPos: ' + lTops[ fNdx ] + ', lowest: ' + lowest + ', toComplete: ' + toComplete + ', autoFaceUp: ' + autoFaceUp + ', tPos: ' + tPos + ', fPos: ' + fPos + ', nmbr: ' + nmbr + ', suit: ' + suit + ', faceUp-1: ' + myLO[ fNdx ][ lowest -1 ] + ':' + faceUp[ myLO[ fNdx ][ lowest -1 ] ] + '\n')
+
+				    if ( autoFaceUp ) deadlock = 0
+				    if ( lowest == 1 ) removed[ fab ] = true
+
+				    move = moveValue( tNdx, fNdx, lowest, autoFaceUp )
+				    lTops[ fNdx ] = ( lowest - 1 )
+
+				    lVals[ fNdx ] = myLO[ fNdx ][ lTops[ fNdx ] ]
+				    for ( ; lowest <= fPos; lowest++ ) {
+					lTops[ tNdx ]++
+					lVals[ tNdx ] = myLO[ fNdx ][ lowest ]
+					myLO[ tNdx ][ lTops[ tNdx ] ] = lVals[ tNdx ]
+					myLO[ fNdx ][ lowest ] = undefined
+				    }
+				}
+			    }
+			}
+			break
+
+			default:
+			    break
+		}
+		if ( allDone ) {
+		    myHist.unshift(move)
+		    var tmp = reps - lastSuccess
+		    if ( tmp > maxGap ) maxGap = tmp
+		    lastSuccess = reps
+		    kase[id]++
+		}
+
+		if ( diags || diagDone ) {
+		    strng = ''
+		    if ( allDone || DEBUG ) {
+			strng = snapShot(myLO, faceUp, undefined, undefined )
+
+			var ttl = 0
+			for ( ndx = 0; ndx < myLO.length; ndx++ ) {
+			    for ( xdn = 0; xdn < myLO[ndx].length; xdn++ ) {
+				if ( xdn == 0 && ndx != sltStockNum && ndx != sltWasteNum && myLO[ndx][xdn] != -1 ) {
+				    fatalError = true
+				    strng += 'ERROR: ndx: ' + ndx + ', xdn: ' + xdn + ', ' + myLO[ndx].join() + '\n'
+				}
+
+				if ( xdn == 0 && ( ndx == sltStockNum || ndx == sltWasteNum ) && myLO[ndx][xdn] != undefined && myLO[ndx][xdn] != -1 ) ttl++
+				if ( xdn != 0 && myLO[ndx][xdn] != undefined && myLO[ndx][xdn] != -1 ) ttl++
+			    }
+			}
+			if ( ttl != 52 ) {
+			    fatalError = true
+			    strng += 'ERROR-TOTAL: ' + ttl + '\n'
+			}
+
+			strng += 'hist: ' + myHist[0] + '\n'
+			strng += 'lTops: ' + lTops.join() + ', lVals: ' + lVals.join() + ', ID: ' + id + ', REPS: '
+			    + reps + ', hmf: ' + hmf + (( id < 3 ) ? (', stock: ' + lTops[ sltWasteNum ]) : '' ) + '\n'
+
+			strng += 'cmplt: ' + cmplt.join() + ', removed: ' + removed.join() + ', deadlock: ' + deadlock + '\n'
+		    } else {
+			strng += 'REPS: ' + reps + ', ID: ' + id + '\n'
+		    }
+		    if ( DEBUG ) console.log( strng )
+		    histry.push( strng )
+		}
+	    }
+
+	    allDone = ( cmplt.indexOf(false) == -1 )
+	    if ( fatalError ) {
+		cmplt[9] = false
+		allDone = false
+	    } else if ( allDone ) {
+		//
+		//	at this point
+		//		all tableaus are complete
+		//		tableaus and foundations may have extra cards
+		//
+		//	if WINOP was higher, these would be less necessary
+		//	the first two clean ups ( case 1 & 2 ) are needed approx 1.2% of the time
+		//	the ratio of calls of case 1 & 2 are 13 / 87
+		//	c.f.: "need more empirical data."
+		//
+		//	case 1: found -> waste
+		//	empty foundations to waste
+		//
+		for ( ndx = 0; ndx < found.length; ndx++ ) {
+		    fNdx = found[ ndx ]
+		    while (( fPos = lTops[ fNdx ] ) > 0 ) {
+			pos = lTops[ stock[1] ]
+			if ( pos == -1 ) {
+			    pos = 0
+			} else if ( myWaste[ pos ] != undefined ) {
+			    pos = myWaste.length -1
+			    while ( pos > 1 && myWaste[ pos -1 ] == undefined ) pos--
+			    while ( pos > 0 && myWaste[ pos -1 ] != undefined ) myWaste[ pos ] = myWaste[ --pos ]
+			}
+			move = moveValue( sltWasteNum, fNdx, fPos, false )
+			myHist.unshift(move)
+
+			lTops[ stock[1] ] = pos
+			myWaste[ lTops[ stock[1] ] ] = lVals[ fNdx ]
+			myLO[ fNdx ][ fPos ] = undefined
+			lTops[ fNdx ]--
+			lVals[ fNdx ] = myLO[ fNdx ][ lTops[ fNdx ] ]
+		    }
+		}
+
+		//
+		//	case 2: tableau -> waste
+		//	empty tableaus to waste
+		//
+		for ( ndx = 0; ndx < table.length; ndx++ ) {
+		    tNdx = table[ ndx ]
+		    while (( tPos = lTops[ tNdx ] ) > ( ndx + 1 )) {
+			pos = lTops[ stock[1] ]
+			if ( pos == -1 ) {
+			    pos = 0
+			} else if ( myWaste[ pos ] != undefined ) {
+			    pos = myWaste.length -1
+			    while ( pos > 1 && myWaste[ pos -1 ] == undefined ) pos--
+			    while ( pos > 0 && myWaste[ pos -1 ] != undefined ) myWaste[ pos ] = myWaste[ --pos ]
+			}
+			move = moveValue( sltWasteNum, tNdx, tPos, false )
+			myHist.unshift(move)
+
+			lTops[ stock[1] ] = pos
+			myWaste[ lTops[ stock[1] ] ] = lVals[ tNdx ]
+			myLO[ tNdx ][ tPos ] = undefined
+			lTops[ tNdx ]--
+			lVals[ tNdx ] = myLO[ tNdx ][ lTops[ tNdx ] ]
+		    }
+		}
+
+		//
+		//	case 0: shift 3 cards from waste to stock
+		//	empty waste to stock
+		//
+		if (( lTops[ stock[1] ] % 3 ) == 0 ) {
+		    for ( ndx = lTops[ stock[1] ]; ndx < myWaste.length; ndx++ ) {
+			if ( myWaste[ ndx ] == undefined ) {
+			    cmplt[10] = false
+			    fatalError = true
+			    break
+			}
+			myStock[ ndx ] = myWaste[ ndx ]
+			myWaste[ ndx ] = undefined
+			if (( ndx % 3 ) == 0 ) myHist.unshift(-3)
+		    }
+		    if ( myHist[0] < 0 ) myHist.shift()
+		    if ( diags ) console.log('myStock: ' + myStock.join())
+		} else {
+		    //
+		    //	this has not been seen, however, it means that this sequence is not valid
+		    //
+		    cmplt[11] = false
+		    fatalError = true
+		    allDone = false
+		}
+	    }
+
+	    if ( diags || fatalError || ( allDone && diagDone )) {
+		for ( ndx = 0; ndx < histry.length; ndx++ ) console.log( histry[ ndx ] )
+		strng += 'lTops: ' + lTops.join() + ', lVals: ' + lVals.join() + ', ID: ' + id + ', REPS: ' + reps + '\n'
+		strng += 'cmplt: ' + cmplt.join() + ', removed: ' + removed.join() + '\n'
+		strng += 'kase: ' + kase.join() + ', tmpt: ' + tmpt.join() + '\n'
+
+		console.log( strng )
+	    }
+
+
+	    //
+	    //	return array of cards ...
+	    //
+	    var rnd = new Array()
+	    if ( allDone ) {
+		for ( ndx = 0; ndx < table.length; ndx++ ) {
+		    tNdx = table[ ndx ]
+		    for ( xdn = 1; xdn <= ( tNdx + 1 ); xdn++ ) rnd.push( myLO[ tNdx ][ xdn ] )
+		}
+		for ( ndx = 0; ndx < myStock.length; ndx++ ) rnd.push( myStock[ ndx ] )
+	    }
+
+	    return( [ reps, lastSuccess, maxGap, cmplt.indexOf(false), hmf, myHist, rnd ] )
+	}
+
+	function winGame( rndm ) {
+	    var ray, ndx
+	    var cnt = 0
+	    TRYS = 0
+	    if ( rndm == rndm ) {
+		while ( true ) {
+		    //
+		    //	does not find a winning sequence 35% of the time
+		    //
+		    cnt++
+		    ray = findWinner( WINOP, DEBG3 )
+		    if ( ray[3] == -1 ) break
+		}
+	    } else {
+		cnt = 0
+		//
+		//	initial "-6" is unshifted onto ray[5]
+		//
+		ray = [
+			0, 0, 0, -1, 0,
+			[ 1050900,1050102,-3,-3,-3,80304,-3,-3,-3,-3,-3,80405,-3,-3,80504,505,-3,1030406,-3,80901,-3,81000,41001,40902,-3,-2,-3,-3,-3,-3,-3,-3,80903,80000,-1,-3,-3,-3,-3,80001,1030002,-3,-2,-3,-3,-3,-3,90302,81002,100303,1060304,90406,1020407,1060202,1060003,1040604,-3,-1,-3,-3,80404,80203,-3,-3,-3,-3,-3,80204,-3,1040205,-3,-1,-3,81100,61101,60902,30403,30903,1040302,1040103,-3,80401,80004,-3,-3,80005,80506,40507,-3,80400,-3,80401,-1,-3,80207,80402,1010403,1060101,80509,-6,1030510,80301,10006,80100,1050101,1050208,1060502,1020602,1060503,61200,1050600,11201,11002,51102,61202,1003,61103,11203,904,31004,11104,61204,30905,61005,1105,11205,906,11006,21106,61206,40907,61007,1107,11207,908,41008,11108,61208,10909,61009,1109,41209,910,41010,11110,61210,40911,61011,1111,11211,912,41012,11112,61212 ],
+			[ 35,32,9,45,22,40,31,43,36,28,7,33,3,18,30,41,12,2,11,21,26,0,10,24,44,48,8,1,46,29,38,47,17,13,37,15,27,50,51,42,14,19,6,49,34,4,20,25,39,16,23,5 ]
+		    ]
+	    }
+	    console.log('winGame() tries: ' + cnt + ', hmf: ' + ray[4] )
+
+	    wipeBoard()
+
+	    var rnd = ray.pop()
+	    DEAL = rnd.join()
+	    histF = ray.pop()
+
+	    for ( ndx = 0;  ndx < 52;  ndx++) {
+		CARDS[ ndx ] = DECK[ rnd[ ndx ] ]
+		CARDZ[ ndx ] =       rnd[ ndx ]
+	    }
+
+	    histF.unshift( FLIPA )
+	    restart()
+	}
+
+	function winTest(quik) {
+	    var ray, ndx, rnd, myHist
+	    if ( quik < 0 ) {
+		for ( ndx = 0; ndx < 100000; ndx++ ) {
+		    ray = findWinner( WINOP, false )
+		    if ( ray[3] >= 9 ) {
+			console.log('winTest: ' + ray[3] )
+			break
+		    }
+		}
+		console.log(ndx)
+	    } else if ( quik < 2 ) {
+		ray = findWinner( WINOP, false )
+		rnd = ray.pop()
+		myHist = ray.pop()
+		console.log(ray.join())
+		// console.log(rnd.join())
+		// console.log(myHist.join())
+	    } else {
+		var tests, avger, sccss, sccsf, dxn, xdn
+		tests = [ 270, 266, 262, 258, 254, 250 ]
+		tests = [ 270, 260, 250 ]
+		tests = [ 265, 260, 255 ]
+		tests = [ 300, 280, 270, 260, 250, 240, 230, 220, 210, 200 ]
+		tests = [ 240, 230, 220, 210, 200, 180, 170, 160, 150, 140 ]
+		tests = [ 203, 200, 198, 195, 193, 190, 188, 185, 183, 180, 178, 175, 173, 170 ]
+		tests = [ 192, 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179 ]
+		tests = [ 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, 177 ]
+		tests = [ 600, 400, 300, 280, 270, 260, 250, 240, 230, 220, 210, 200, 180, 170 ]
+		tests = [ 350, 340, 330, 320, 310, 300, 290, 280, 270, 260, 250, 240, 230, 220 ]
+		tests = [ 330, 320, 310, 300, 290, 280, 270, 260, 250, 240, 230, 225 ]
+		tests = [ 220, 215, 210, 205, 200, 195, 190, 185, 180, 175, 170, 165, 160, 155 ]
+		tests = [ 220, 217, 214, 211, 208, 205, 202, 199, 196, 193, 190, 187, 184, 181 ]
+		tests = [ 211, 209, 208, 207, 206, 205, 204, 203, 202, 201, 200, 199, 197, 195 ]
+		tests = [ 206, 205, 204, 203, 202, 201, 200, 199, 198, 197, 196, 195, 194, 193 ]
+		tests = [ 210, 200, 190, 185, 180, 175, 170, 165, 160, 150, 140, 135, 130, 125 ]
+		tests = [ 190, 185, 180, 175, 170, 165, 160, 155, 150, 145, 140, 135, 130, 125 ]
+		tests = [ 240, 230, 220, 210, 200, 180, 170, 160, 150, 140, 130, 120, 110, 100 ]
+		tests = [ 300, 280, 270, 260, 250, 240, 230, 220, 210, 200, 180, 170, 160, 150 ]
+		tests = [ 266, 265, 260, 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245 ]
+		tests = [ 242, 240, 238, 236, 234, 232, 230, 228, 226, 224, 222, 220, 218, 216 ]
+		tests = [ 270, 268, 266, 264, 262, 260, 258, 256, 254, 252, 250, 248, 246, 244 ]
+		tests = [ 298, 296, 294, 292, 290, 288, 286, 284, 282, 280, 278, 276, 274, 272 ]
+		tests = [ 600, 570, 540, 510, 480, 450, 420, 390, 360, 330, 300, 270, 240, 210 ]
+		tests = [ 570, 540, 510, 480, 450, 420, 390, 360, 330, 300, 270, 240, 210, 180 ]
+		tests = [ 390, 380, 370, 360, 350, 340, 330, 320, 310, 300, 290, 280, 270, 260 ]
+		tests = [ 390, 385, 380, 375, 370, 365, 360, 355, 350, 345, 340, 335, 330, 325 ]
+		tests = [ 388, 386, 384, 382, 380, 378, 376, 374, 372, 370, 368, 366, 364, 362 ]
+		tests = [ 388, 385, 382, 379, 376, 373, 370, 367, 364, 361, 358, 355, 352, 349 ]
+		tests = [ 389, 387, 385, 383, 381, 379, 377, 375, 373, 371, 369, 367, 365, 363 ]
+		tests = [ 376, 375, 374, 373, 372, 371, 370, 369, 368, 367, 366, 365, 364, 363 ]
+		avger = [   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ]
+		sccss = [   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ]
+		sccsf = [   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ]
+		for ( xdn = 0; xdn < quik; xdn++ ) {
+		    for ( dxn = 0; dxn < tests.length; dxn++ ) {
+			var repsS = 0; var lassS = 0; var maxgS = 0; var sccsS = 0; var moveS = 0; var hmfS = 0
+			var repsF = 0; var lassF = 0; var maxgF = 0; var sccsF = 0; var moveF = 0; var hmfF = 0
+			var timeS = new Date().getTime()
+			for ( ndx = 0; sccsS < 10; ndx++ ) {
+			    ray = findWinner( tests[ dxn ], false )
+			    rnd = ray.pop()
+			    myHist = ray.pop()
+			    if ( ray[3] == -1 ) {
+				repsS += ray[0]; lassS += ray[1]; maxgS += ray[2]; sccsS++; moveS += myHist.length
+				hmfS += ray[4]
+			    } else {
+				repsF += ray[0]; lassF += ray[1]; maxgF += ray[2]; sccsF++; moveF += myHist.length
+				hmfF += ray[4]
+			    }
+			}
+			var timeE = new Date().getTime()
+			avger[ dxn ] += ( timeE - timeS )
+			sccss[ dxn ] += sccsS
+			sccsf[ dxn ] += sccsF
+		    }
+		}
+		for ( dxn = 0; dxn < tests.length; dxn++ ) {
+		    console.log('test: ' + tests[ dxn ] + ', time: ' + avger[ dxn ]
+			+ ', avg: ' + ( Math.round(( 1000 * avger[ dxn ] ) / sccss[ dxn ] ))
+			+ ', s/f: ' + sccss[ dxn ] + ' / ' + sccsf[ dxn ] )
+		}
+	    }
+	}
+
+	function playDemo( bgn ) {
+	    //
+	    //	bgn == true	calculates a winning game and loads forward history
+	    //	bgn == false	plays a single move forward
+	    //	GOVER == true	isGameOver() has checked, all cards exposed, clearTable() takes over
+	    //
+	    if ( ! GOVER && ( bgn || histF.length > 0 )) {
+		if ( bgn ) {
+		    //
+		    //	prevent interruption
+		    //
+		    CELEBRT = true
+		    winGame( true )
+		} else {
+		    clearAnimation()
+		    processHist(true)
+		}
+		//
+		//	continue until all forward moves played
+		//
+		window.setTimeout("playDemo(false)", mxTym * 1000 )
+	    }
+	}
+
+	function beginGame() {
+	    var ndx
+	    var rnd = randomize(52)
+	    TRYS = 0
+
+	    wipeBoard()
+
+	    for ( ndx = 0;  ndx < 52;  ndx++) {
+		CARDS[ ndx ] = DECK[ rnd[ ndx ] ]
+		CARDZ[ ndx ] =       rnd[ ndx ]
+	    }
+
+	    restart()
+	}
+
+	function startGame() {
+	    objBoard.removeChild( pHoldS[ 0 ] )
+	    objBoard.appendChild( pHoldS[ 1 ] )
+	    pHoldS[ 0 ].setAttribute('faceUp', 0 )
+	    pHoldS[ 1 ].setAttribute('faceUp', 1 )
+	    pHoldS[ 2 ].setAttribute('faceUp', 0 )
+
+	    if        ( 2 == 1 ) { ;
+	    } else if ( 2 == 1 ) { winTest( -1 )
+	    } else if ( 2 == 1 ) { winTest(  1 )
+	    } else if ( 2 == 1 ) { winTest(  2 )
+	    }
+
+	    beginGame()
+	}
+
+	function repaintTbl(col, start) {
+	    //
+	    //	initially, each tableau column contains
+	    //		a placeholder	- [ 0           ]
+	    //		card backs	- [ 1 -> col -1 ]
+	    //		card face	- [      col    ]
+	    //
+	    //	after each move, the FROM tableau is repainted, then the TO tableau
+	    //
+	    var ray = LAYOUT[ col ]
+	    var card
+	    if ( DEBUG ) console.log('repaintTbl col: ' + col + ' start: ' + start )
+
+	    var row
+	    var first = 0
+	    for ( row = 1; row < start; row++ ) {
+		card = CARDS[ ray[ row ] ]
+		if ( card.getAttribute('faceUp') == '1') first++
+	    }
+	    for ( row = start; row < ray.length; row++ ) {
+		if ( ray[ row ] == undefined ) break
+		card = CARDS[ ray[ row ] ]
+		if ( card.getAttribute('faceUp') == '1') {
+		    var x = ( ndntT + ( gapT *   col                          )) * viewX
+		    var y = ( ndntY + ( gapR * ( row -1 )) + ( gapU * first++ )) * viewY
+		    card.setAttribute("transform", "translate(" + x + "," + y + ")")
+
+		    objBoard.appendChild( card )
+		} else {
+		    objBoard.appendChild( crdBck[ col ][ row ] )
+		}
+	    }
+	}
+	function repaintTblName(key, start) {
+	    repaintTbl( kezSlt[ key ], start )
+	}
+
+	function moveCard( card, fromX, fromY, toX, toY, remove ) {
+	    zeroClock()
+	    //
+	    //	disabled:	calc constant speed based on distance
+	    //
+	    var tyme = mxTym	//	* (( topWX - toX ) / mxMot )
+
+	    //
+	    //	set to top of the z-stack
+	    //
+	    if ( remove ) objBoard.removeChild( card )
+
+	    objBoard.appendChild( card )
+
+	    var motn = document.createElementNS( nsSvg, "animateTransform")
+	    motn.setAttribute("attributeName", "transform")
+	    motn.setAttribute("type", "translate")
+	    motn.setAttribute("from", fromX + ' ' + fromY )
+	    motn.setAttribute("to", toX + ' ' + toY )
+	    motn.setAttribute("dur", tyme + "s")
+	    motn.setAttribute("min", tyme + "s")
+	    motn.setAttribute("fill", "freeze")
+	    card.appendChild(motn)
+	    HOLDER.push( card )
+	    MOTIAN.push( [ motn ] )
+	    card.setAttribute("transform", "translate(" + toX + "," + toY + ")")
+	}
+
+	function isGameOver() {
+	    var ndx, xdn
+	    var cnt = 0
+
+	    for ( ndx = 0; ndx < lStock.length; ndx++ ) {
+		if ( lStock[ ndx ] != undefined || lWaste[ ndx ] != undefined ) {
+		    cnt++
+		    if ( cnt > 1 ) break
+		}
+	    }
+
+	    if ( cnt < 2 ) {
+		for ( ndx = 0;  ndx < 52;  ndx++) {
+		    if ( CARDS[ ndx ].getAttribute('faceUp') == '0') {
+			cnt = 2
+			break
+		    }
+		}
+	    }
+
+	    if ( cnt > 1 ) {
+		GOVER = false
+	    } else {
+		if ( ! GOVER ) {
+		    //
+		    //	this allows use of back and forward buttons after winning
+		    //
+		    GOVER = true
+		    console.log('GAME OVER IN ' + MOVES + ' MOVES !!!')	// todo: modal dialog , prize
+
+		    for ( ndx = 0; DEBUG && ndx < 52;  ndx++) {
+			card = DECK[ ndx ]
+			console.log( ndx + ' cNdx: ' + card.getAttribute('cNdx')
+			+ ' faceUp: ' + card.getAttribute('faceUp')
+			+ ' id: ' + card.getAttribute('id')
+			+ ' name: ' + NAMEZ[ ndx ]
+			+ ' numbr: ' + ( ndx % 13 )
+			+ ' slot: ' + card.getAttribute('slot')
+			+ ' slotPos: ' + card.getAttribute('slotPos')
+			+ ' suite: ' + Math.floor( ndx / 13 ))
+		    }
+
+		    var fondZ = [ -1, -1, -1, -1 ]
+		    var fondP = [  0,  0,  0,  0 ]
+		    var fondS = [ -1, -1, -1, -1 ]
+		    var least = 12			//	The shortest foundation
+		    for ( ndx = 0; ndx < fNames.length; ndx++ ) {
+			var ray = loHash[ fNames[ ndx ]]
+			var pos = -1
+			for ( xdn = 1; xdn < ray.length; xdn++ ) {
+			    if ( ray[ xdn ] == undefined ) {
+				break
+			    } else {
+				pos = xdn
+			    }
+			}
+			if ( pos > 0 ) {
+			    fondP[ ndx ] = pos
+			    fondS[ ndx ] = Math.floor( CARDZ[ ray[ pos ] ] / 13 )	// suite
+			    fondZ[ fondS[ ndx ] ] = 0
+			}
+			if ( least > pos ) least = pos
+		    }
+
+		    for ( ndx = 0; ndx < fondS.length; ndx++ ) {
+			if ( fondS[ ndx ] == -1 ) {
+			    //
+			    //	empty foundation, assign it a suite
+			    //
+			    for ( xdn = 0; xdn < fondZ.length; xdn++ ) {
+				if ( fondZ[ xdn ] == -1 ) {
+				    fondS[ ndx ] = xdn
+				    fondZ[ xdn ] = 0
+				    break
+				}
+			    }
+			}
+		    }
+
+		    window.setTimeout("clearTable(" + fondP[0] + "," + fondP[1] + "," + fondP[2] + "," + fondP[3] + "," + fondS[0] + "," + fondS[1] + "," + fondS[2] + "," + fondS[3] + ")", ( mxTym * 500 ))
+		}
+	    }
+	}
+
+	function processFromTo( fromSlot, fromPos, toSlot, toPos, card ) {
+	    var ndx, ray, row, first, toX, toY
+	    var fromSlotNum = kezSlt[ fromSlot ]
+	    var toSlotNum = kezSlt[ toSlot ]
+	    var move = moveValue( fromSlotNum, toSlotNum, ( toPos + 1 ), false )
+	    var redo = manageButtons( false, false, undefined )
+	    if ( redo > AUTUP ) redo -= AUTUP
+
+	    MOVES++
+
+	    if ( DEBUG ) console.log('fromSlot: ' + fromSlot + ' fromPos: ' + fromPos + ' toSlot: ' + toSlot + ' toPos: ' + toPos + ' slot: ' + fromSlotNum + ' slot2: ' + toSlotNum + ' move: ' + move + ' redo: ' + redo )
+
+	    if ( move != redo ) {
+		//
+		//	starting a new path
+		//
+		redo = undefined
+		manageButtons( false, false, NOMUV )
+	    }
+
+	    //
+	    //	Calculate "to" position
+	    //
+	    if ( toSlot.indexOf('lTabl', 0 ) == 0 ) {
+		ray = LAYOUT[ toSlotNum ]
+		first = 0
+		for ( row = 1; row <= toPos; row++ ) {
+		    if ( CARDS[ ray[ row ] ].getAttribute('faceUp') == '1') first++
+		}
+
+		toX = ( ndntT + ( gapT *   toSlotNum                    )) * viewX
+		toY = ( ndntY + ( gapR * ( row -1 )) + ( gapU * first++ )) * viewY
+	    } else {
+		toX = fondX[ toSlot ]
+		toY = fondY[ toSlot ]
+	    }
+
+	    if ( fromSlot == 'lWaste') {
+		manageButtons( true, true, move )
+		for ( ndx = fromPos; ndx < lWaste.length -1; ndx++ ) {
+		    lWaste[ ndx ] = lWaste[ ndx +1 ]
+		    if ( lWaste[ ndx ] == undefined ) break
+		    CARDS[ lWaste[ ndx ] ].setAttribute('slotPos', ndx )
+		}
+		lWaste[ lWaste.length -1 ] = undefined	// todo: optimize
+		if ( ndx == fromPos ) {
+		    if ( lStock[0] == undefined ) {
+			//
+			//	no more cards in either stock or waste
+			//
+			repaintStock()
+		    } else {
+			//
+			//	cleared the waste, flip3() calls repaintStock()
+			//
+			flip3(FLIPA)
+		    }
+		} else {
+		    repaintStock()
+		}
+		//
+		//	Process To:
+		//
+		card.setAttribute('slot', toSlotNum )
+		card.setAttribute('slotPos',      toPos + 1 )
+		LAYOUT[ toSlotNum ][ toPos + 1 ] = strNum[ card.getAttribute('cNdx') ]
+
+		moveCard( card, topWX, topWY, toX, toY, false )
+
+		manageScore(( toSlot.indexOf('lTabl', 0 ) == 0 ) ? SC_WT : SC_WF )
+	    } else {
+		var roy = loHash[ fromSlot ]
+
+		var frX
+		var frY
+		if ( fromSlot.indexOf('lTabl', 0 ) == 0 ) {
+		    ray = LAYOUT[ fromSlotNum ]
+		    first = 0
+		    for ( row = 1; row <= fromPos; row++ ) {
+			if ( CARDS[ ray[ row ] ].getAttribute('faceUp') == '1') first++
+		    }
+
+		    frX = ( ndntT + ( gapT *   fromSlotNum                  )) * viewX
+		    frY = ( ndntY + ( gapR * ( row -1 )) + ( gapU * first++ )) * viewY
+		} else {
+		    frX = fondX[ fromSlot ]
+		    frY = fondY[ fromSlot ]
+		}
+
+		var pas = toPos + 1
+		for ( ndx = fromPos; ndx < roy.length; ndx++ ) {
+		    //
+		    //	move one card if lFond*
+		    //	move one or more cards if lTabl*
+		    //
+		    if ( roy[ ndx ] == undefined ) break
+		    var kard = CARDS[ roy[ ndx ] ]
+
+		    moveCard( kard, frX, frY, toX, toY, true )
+
+		    toY += ( gapR + gapU ) * viewY
+		    frY += ( gapR + gapU ) * viewY
+
+		    roy[ ndx ] = undefined
+		    //
+		    //	Process To:
+		    //
+		    kard.setAttribute('slot',    toSlotNum )
+		    kard.setAttribute('slotPos', pas )
+		    LAYOUT[ toSlotNum ][ pas ] = strNum[ kard.getAttribute('cNdx') ]
+		    pas++
+		}
+		if ( fromSlot.indexOf('lTabl', 0 ) == 0 ) {
+		    //
+		    //	if there is a hidden card below the one 'in play' remove it's cardback
+		    //
+		    if ( fromPos > 1 ) {
+			if (CARDS[ roy[ fromPos -1 ] ].getAttribute('faceUp') != '1') {
+			    CARDS[ roy[ fromPos -1 ] ].setAttribute('faceUp', 1 )
+			    objBoard.removeChild( crdBck[ fromSlotNum ][ fromPos -1 ] )
+			    move += AUTUP
+			    window.setTimeout("repaintTbl(" + fromSlotNum  + "," + ( fromPos -1 ) + ")", ( mxTym * 500 ))
+			}
+		    }
+		    manageScore(((       toSlot.indexOf('lTabl', 0 ) == 0 ) ? SC_TT : SC_TF )
+			+ ( move > AUTUP ? SC_TO : 0 ))
+		} else {
+		    manageScore((        toSlot.indexOf('lTabl', 0 ) == 0 ) ? SC_FT : SC_FF )
+		}
+		manageButtons( true, true, move )
+	    }
+
+	    isGameOver()
+	}
+
+	function processToFrom( fromSlotNum, autoFaceUp, toSlotNum, toPos ) {
+	    var ndx, ray, row, frX, frY, first
+	    var fromSlot = sltKez[ fromSlotNum ]
+	    var toSlot = sltKez[ toSlotNum ]
+	    var card = CARDS[ LAYOUT[ toSlotNum ][ toPos + 1 ] ]
+
+	    MOVES++
+
+	    if ( DEBUG ) console.log('slotF: ' + fromSlotNum + ' autoFaceUp: ' + autoFaceUp + ' slot2: ' + toSlotNum + ' pos2: ' + toPos + ', fromSlot: ' + fromSlot + ' : ' + LAYOUT[ fromSlotNum ] + ' toSlot: ' + toSlot + ' layout2: ' + LAYOUT[ toSlotNum ] )
+	    //
+	    //	Calculate "from" position
+	    //
+	    if ( toSlot.indexOf('lTabl', 0 ) == 0 ) {
+		ray = LAYOUT[ toSlotNum ]
+		first = 0
+		for ( row = 1; row <= toPos; row++ ) {
+		    if ( CARDS[ ray[ row ] ].getAttribute('faceUp') == '1') first++
+		}
+
+		frX = ( ndntT + ( gapT *   toSlotNum                    )) * viewX
+		frY = ( ndntY + ( gapR * ( row -1 )) + ( gapU * first++ )) * viewY
+	    } else {
+		frX = fondX[ toSlot ]
+		frY = fondY[ toSlot ]
+	    }
+
+	    if ( fromSlot == 'lWaste') {
+		ndx = lWaste.length -1
+		while ( ndx > 0 && lWaste[ ndx -1 ] == undefined ) ndx--
+		if ( ndx > 0 ) {
+		    for ( ; ndx > 0; ndx-- ) {
+			lWaste[ ndx ] = lWaste[ ndx -1 ]
+			if ( lWaste[ ndx ] == undefined ) break
+			CARDS[ lWaste[ ndx ] ].setAttribute('slotPos', ndx )
+		    }
+		} else {
+		    //
+		    //	unFlip3(FLIPA) was called before processToFrom()
+		    //	correctly position the card in lWaste[]
+		    //
+		    for ( ndx = lStock.length -1; ndx >= 0; ndx-- ) {
+			if ( lStock[ ndx ] != undefined ) break
+		    }
+		    ndx++
+		}
+
+		//
+		//	the card has now been returned to 'waste'
+		//
+		lWaste[ ndx ] = strNum[ card.getAttribute('cNdx') ]
+		card.setAttribute('slot', fromSlotNum )
+		card.setAttribute('slotPos', ndx )
+
+		moveCard( card, frX, frY, topWX, topWY, true )
+
+		window.setTimeout("repaintStock()", ( mxTym * 1000 ))
+		LAYOUT[ toSlotNum ][ toPos + 1 ] = undefined
+		manageScore( 0 - (( toSlot.indexOf('lTabl', 0 ) == 0 ) ? SC_WT : SC_WF ))
+	    } else {
+		//
+		//	either lTabl* or lFond*
+		//
+		var fromPos, toX, toY
+		ray = LAYOUT[ fromSlotNum ]
+		for ( fromPos = 1; fromPos < ray.length; fromPos++ ) {
+		    if ( ray[ fromPos ] == undefined ) break
+		}
+
+		fromPos--
+		if ( autoFaceUp ) {
+		    CARDS[ ray[ fromPos ] ].setAttribute('faceUp', 0 )
+		    objBoard.removeChild( CARDS[ ray[ fromPos ] ] )
+		    objBoard.appendChild( crdBck[ fromSlotNum ][ fromPos ] )
+		}
+		fromPos++
+		var roy = LAYOUT[ toSlotNum ]
+
+		if ( fromSlot.indexOf('lTabl', 0 ) == 0 ) {
+		    ray = LAYOUT[ fromSlotNum ]
+		    first = 0
+		    for ( row = 1; row < fromPos; row++ ) {
+			if ( CARDS[ ray[ row ] ].getAttribute('faceUp') == '1') first++
+		    }
+
+		    toX = ( ndntT + ( gapT *   fromSlotNum		    )) * viewX
+		    toY = ( ndntY + ( gapR * ( row -1 )) + ( gapU * first++ )) * viewY
+		} else {
+		    toX = fondX[ fromSlot ]
+		    toY = fondY[ fromSlot ]
+		}
+
+		var pas = fromPos
+		for ( ndx = toPos + 1; ndx < roy.length; ndx++ ) {
+		    //
+		    //	move one card if lFond*
+		    //	move one or more cards if lTabl*
+		    //
+		    if ( roy[ ndx ] == undefined ) break
+		    var kard = CARDS[ roy[ ndx ] ]
+
+		    moveCard( kard, frX, frY, toX, toY, true )
+
+		    frY += ( gapR + gapU ) * viewY
+		    toY += ( gapR + gapU ) * viewY
+
+		    roy[ ndx ] = undefined
+		    //
+		    //	Process To:
+		    //
+		    kard.setAttribute('slot',    fromSlotNum )
+		    kard.setAttribute('slotPos', pas )
+		    if ( fromSlot.indexOf('lFond', 0 ) == 0 ) kard.setAttribute('transform', fondXY[ fromSlot ] )
+		    ray[ pas ] = strNum[ kard.getAttribute('cNdx') ]
+		    pas++
+		}
+
+		if ( fromSlot.indexOf('lTabl', 0 ) == 0 ) {
+		    window.setTimeout("repaintTbl( " + fromSlotNum + ", " + fromPos + ")", ( mxTym * 500 ))
+		    //
+		    //	Repaint To:
+		    //
+		    manageScore( 0 - ((( toSlot.indexOf('lTabl', 0 ) == 0 ) ? SC_TT : SC_TF ) + ( autoFaceUp ? SC_TO : 0 )))
+		} else {
+		    manageScore( 0 - ((  toSlot.indexOf('lTabl', 0 ) == 0 ) ? SC_FT : SC_FF ))
+		}
+	    }
+	}
+
+	function anyRestore() {
+	    var ndx
+	    var xdn
+	    clearAnimation()
+	    for ( ndx = 0; ndx < 4; ndx++ ) {
+		var roy = loHash[ fNames[ ndx ] ]
+		var rey = loHash[ sltKez[ ndx ] ]
+		for ( xdn = 1; xdn < 14; xdn++ ) {
+		    roy[ xdn ] = rey[ xdn ]
+		    rey[ xdn ] = undefined
+		}
+	    }
+	    CELEBRT = false
+	}
+
+	function makeSpiral( strtX, strtY, endX, endY, lupes, cw, opin, radus ) {
+	    var qrtrz = Math.floor( lupes ) * 4
+	    var smPct = ( qrtrz / 2 ) + 0.5
+	    var pth = ''
+	    var redck = ( qrtrz == 0 ? 0 : ( radus / qrtrz ))
+	    if ( redck == 0 ) radus = 0
+
+	    var redct = redck + redck
+	    var bigStart = ( strtY > endY )
+	    var diffX = ( opin ) ? redck : radus
+
+	    var compQ
+	    if (          strtX == endX && strtY != endY ) {
+		//
+		//	upper  middle  : lower  middle
+		//
+		if ( cw ) {
+		    compQ = ( bigStart   ? [ -1,  0, 0 ] : [  1,  0, 2 ] )
+		} else {
+		    compQ = ( bigStart   ? [  1,  0, 2 ] : [ -1,  0, 0 ] )
+		}
+	    } else if   ( strtY == endY ) {
+		//
+		//	middle left	: middle right
+		//
+		compQ = ( strtX  > endX   ? [  0, -1, 3 ] : [  0,  1, 1 ] )
+		if (   cw ) compQ[1] = ( 0 - compQ[1] )
+		if ( opin ) compQ[2] = (     compQ[2] + 2 ) % 4
+	    } else if   ( strtX  < endX ) {
+		//
+		//	upper  right	: lower  right
+		//
+		if ( cw ) {
+		    compQ = ( bigStart   ? [  0, -1, ( opin ? 3 : 1 ) ] : [  1,  0, 2 ] )
+		} else {
+		    compQ = ( bigStart   ? [  1,  0, 2 ] : [  0,  1, ( opin ? 3 : 1 ) ] )
+		}
+	    } else if   ( strtX  > endX ) {
+		//
+		//	upper  left	: lower  left
+		//
+		if ( cw ) {
+		    compQ = ( bigStart   ? [ -1,  0, 0 ] : [  0,  1, ( opin ? 1 : 3 ) ] )
+		} else {
+		    compQ = ( bigStart   ? [  0, -1, ( opin ? 1 : 3 ) ] : [ -1,  0, 0 ] )
+		}
+	    }
+
+	    var sweepF = cw ? ( opin ? 0 : 1 ) : ( opin ? 1 : 0 )
+	    var direct = cw
+		? ( opin
+		    ? [ [ -1, -1 ], [ -1,  1 ], [  1,  1 ], [  1, -1 ] ]
+		    : [ [  1, -1 ], [  1,  1 ], [ -1,  1 ], [ -1, -1 ] ]
+		)
+		: ( opin
+		    ? [ [ -1,  1 ], [ -1, -1 ], [  1, -1 ], [  1,  1 ] ]
+		    : [ [  1,  1 ], [  1, -1 ], [ -1, -1 ], [ -1,  1 ] ]
+		)
+
+	    var mvX = compQ[0] * radus
+	    var mvY = compQ[1] * radus
+	    var crrX = ( 1-Math.abs( compQ[0] )) * redck * ( endX > strtX ? -1 : 1 )
+	    var crrY = ( 1-Math.abs( compQ[1] )) * redck * ( endY > strtY ? -1 : 1 )
+
+	    var ark = ' a'
+		+ Math.round( Math.abs( endX + mvX - strtX + crrX )) + ','
+		+ Math.round( Math.abs( endY + mvY - strtY        )) + ' '
+		+ '0,0,' + sweepF + ' '
+		+ Math.round(         ( endX + mvX - strtX + crrX )) + ','
+		+ Math.round(         ( endY + mvY - strtY        ))
+
+	    if ( opin ) {
+		radus /= qrtrz
+	    } else {
+		pth += ark
+	    }
+
+	    var ndx
+	    for ( ndx = 0; ndx < qrtrz; ndx++ ) {
+		var sgn = direct[ (( ndx + compQ[2] ) % 4 ) ]
+		var pctX = ( opin
+			? (         ( ndx + 1 ))
+			: ( qrtrz - ( ndx + 1 ))
+			) / qrtrz
+		var pctY = ( opin
+			? ((  1 +     ndx ) / qrtrz )
+			: ((  qrtrz - ndx ) / qrtrz )
+			) / smPct
+		var whx = pctY * crrX
+		var why = pctY * crrY
+
+		pth += ' a'
+		    + Math.round(           radus            + whx                     ) + ','
+		    + Math.round( Math.abs( radus * sgn[ 1 ] + why )                   ) + ' '
+		    + '0,0,' + sweepF + ' '
+		    + Math.round((          radus            + whx ) * sgn[ 0 ]        ) + ','
+		    + Math.round(         ( radus * sgn[ 1 ] + why )                   )
+
+		radus = radus + ( opin ? 1 : -1 ) * ( redct * pctX )
+	    }
+
+	    if ( opin ) pth += ark
+
+	    return( pth )
+	}
+
+	function pipAnimation( tyme, pawz ) {
+	    var temp = ( tyme + 52 * pawz )
+	    var ndx
+
+	    for ( ndx = 0; ndx < PIPOB.length ; ndx++ ) {
+		var pipObj = PIPOB[ ndx ]
+
+		var id = pipObj.getAttribute("id")
+		if ( id == "pipHBig") {
+		    var clr1 = document.createElementNS( nsSvg, "animateTransform")
+		    clr1.setAttribute("attributeName", "transform")
+		    clr1.setAttribute("attributeType", "xml")
+		    clr1.setAttribute("type", "scale")
+		    clr1.setAttribute("values", "1;1.30;" )
+		    clr1.setAttribute("dur", "1s")
+		    clr1.setAttribute("repeatCount", "indefinite")
+		    clr1.setAttribute("fill", "freeze")
+		    clr1.setAttribute("additive", "sum")
+		    pipObj.appendChild(clr1)
+
+		    var clr2 = document.createElementNS( nsSvg, "animateTransform")
+		    clr2.setAttribute("attributeName", "transform")
+		    clr2.setAttribute("attributeType", "xml")
+		    clr2.setAttribute("type", "translate")
+		    clr2.setAttribute("values", "1;-16,-20;" )
+		    clr2.setAttribute("dur", "1s")
+		    clr2.setAttribute("repeatCount", "indefinite")
+		    clr2.setAttribute("fill", "freeze")
+		    clr2.setAttribute("additive", "sum")
+		    pipObj.appendChild(clr2)
+
+		    HOLDER.push( pipObj )
+		    MOTIAN.push( [ clr1, clr2 ] )
+		} else {
+		    var clr1 = document.createElementNS( nsSvg, "animate")
+		    clr1.setAttribute("attributeName", "fill")
+		    clr1.setAttribute("attributeType", "CSS")
+		    clr1.setAttribute("values", QOLOR[ id ] )
+		    clr1.setAttribute("dur", temp + "s")
+		    clr1.setAttribute("fill", "freeze")
+		    pipObj.appendChild(clr1)
+
+		    HOLDER.push( pipObj )
+		    MOTIAN.push( [ clr1 ] )
+		}
+	    }
+	}
+
+	function preAnimation( tyme, pawz ) {
+	    clearAnimation()
+	    pipAnimation( tyme, pawz )
+	}
+
+	function addAnimation( krd, tyme, pth, scl, rot, bgin, keyT ) {
+	    var kard = CARDS[ krd ]
+	    //
+	    //	set to top of the z-stack
+	    //
+	    objBoard.removeChild( kard )
+	    objBoard.appendChild( kard )
+
+	    var motn = document.createElementNS( nsSvg, "animateMotion")
+	    motn.setAttribute("path", pth )
+	    motn.setAttribute("dur", tyme + "s")
+	    motn.setAttribute("fill", "freeze")
+	    if ( bgin != 0 ) motn.setAttribute("begin", bgin + "s")
+	    motn.setAttribute("additive", "sum")
+	    kard.appendChild(motn)
+
+	    var ntom = undefined
+	    if ( scl != "1") {
+		ntom = document.createElementNS( nsSvg, "animateTransform")
+		ntom.setAttribute("attributeName", "transform")
+		ntom.setAttribute("attributeType", "xml")
+		ntom.setAttribute("type", "scale")
+		ntom.setAttribute("values", scl )
+		ntom.setAttribute("dur", tyme + "s")
+		ntom.setAttribute("fill", "freeze")
+		if ( bgin != 0 ) ntom.setAttribute("begin", bgin + "s")
+		if ( keyT != undefined ) ntom.setAttribute("keyTimes", keyT )
+		ntom.setAttribute("additive", "sum")
+		kard.appendChild(ntom)
+	    }
+
+	    var ontm = document.createElementNS( nsSvg, "animateTransform")
+	    ontm.setAttribute("attributeName", "transform")
+	    ontm.setAttribute("attributeType", "xml")
+	    ontm.setAttribute("type", "rotate")
+	    ontm.setAttribute("values", rot )
+	    ontm.setAttribute("dur", tyme + "s")
+	    ontm.setAttribute("fill", "freeze")
+	    if ( bgin != 0 ) ontm.setAttribute("begin", bgin + "s")
+	    if ( keyT != undefined ) ontm.setAttribute("keyTimes", keyT )
+	    ontm.setAttribute("additive", "sum")
+	    kard.appendChild(ontm)
+
+	    HOLDER.push( kard )
+	    MOTIAN.push( ntom == undefined ? [ motn, ontm ] : [ motn, ntom, ontm ] )
+
+	    var id = strNum[ kard.getAttribute('id') ]
+	    var st = Math.floor( id / 13 )
+	    var blck = ( st == 0 || st == 2 )
+	    if ( st != 3 ) {
+		var clr1 = document.createElementNS( nsSvg, "animate")
+		clr1.setAttribute("attributeName", "fill")
+		clr1.setAttribute("attributeType", "CSS")
+		clr1.setAttribute("values", KOLOR[ st ] )
+		clr1.setAttribute("dur", tyme + "s")
+		clr1.setAttribute("fill", "freeze")
+		DCKT[ id ].appendChild(clr1)
+
+		HOLDER.push( DCKT[ id ] )
+		MOTIAN.push( [ clr1 ] )
+	    }
+	}
+
+	function any0( rndm ) {
+	    var minX = (   0 - 10 ) * viewX
+	    var minY = (   0 - 10 ) * viewY
+	    var maxX = ( 100 +  0 ) * viewX
+	    var maxY = ( 100 +  0 ) * viewY
+	    var todo = 52
+	    var tyme = rndm ? 20 : 30
+	    var pawz = rndm ?  0 : 0.1
+	    var loup = ( 6 + Math.floor( Math.random() * 6 ))
+	    var nwXs = new Array( loup )
+	    var nwYs = new Array( loup )
+	    for ( ndx = 0; ndx < loup; ndx++ ) {
+		nwXs[ ndx ] = Math.floor( Math.random() * maxX * 100 ) / 100
+		nwYs[ ndx ] = Math.floor( Math.random() * maxY * 100 ) / 100
+	    }
+	    preAnimation( tyme, pawz )
+
+	    while( todo > 0 ) {
+		var ndx   = rndm ? Math.floor( Math.random() * 4 ) : ( todo % 4 )
+		var found = fNames[ ndx ]
+		var roy   = loHash[ found ]
+		var bakup = sltKez[ ndx ]
+		var rey   = loHash[ bakup ]
+
+		for ( ndx = 1; ndx < roy.length ; ndx++ ) {
+		    if ( roy[ ndx ] != undefined ) break
+		}
+		if ( ndx == roy.length ) continue
+
+		var krd    = roy[ ndx ]
+		rey[ ndx ] = roy[ ndx ]
+		roy[ ndx ] = undefined
+
+		var lupz = ( rndm ? ( 6 + Math.floor( Math.random() * 6 )) : loup )
+
+		var strtX = fondX[ found ]
+		var strtY = fondY[ found ]
+		var currX = 0
+		var currY = 0
+		var newX
+		var newY
+		var pth = 'M0,0'
+
+		var currS = 1
+		var incrS = -0.25
+		var scl = currS + ';'
+
+		var currR = 0
+		var rot = currR + ';'
+
+		while( lupz >= 0 ) {
+		    if ( currS < 0.4 ) {
+			incrS = Math.abs( incrS )
+		    } else if ( currS > 1.4 ) {
+			incrS = 0 - Math.abs( incrS )
+		    }
+		    if ( lupz == 0 ) {
+			newX = 0
+			newY = 0
+			currS = 1
+		    } else if ( currX == minX || currX == maxX ) {
+			currS += incrS
+			newX = ( rndm ? Math.floor( Math.random() * maxX * 100 ) / 100 : nwXs[ lupz -1 ] )
+			newY = ( rndm )
+			    ?  newY = (( Math.floor( newX ) % 2 ) == 0 ) ? ( minY - strtY ) : ( maxY - strtY )
+			    : ( currX == minX ) ? ( minY - strtY ) : ( maxY - strtY )
+		    } else {
+			currS += incrS
+			newY = ( rndm ? Math.floor( Math.random() * maxY * 100 ) / 100 : nwYs[ lupz -1 ] )
+			newX = ( rndm )
+			    ?  newX = (( Math.floor( newY ) % 2 ) == 0 ) ? minX : maxX
+			    : ( currY == ( maxY - strtY )) ? minX : maxX
+		    }
+
+		    pth = pth + ' Q ' + ( Math.floor( 100 * ( currX + newX ) / 2 ) / 100 )
+				+ ' ' + ( Math.floor( 100 * ( currY + newY ) / 2 ) / 100 ) + ' ' + newX + ' ' + newY
+		    currX = newX
+		    currY = newY
+
+		    scl = scl + currS + ';'
+
+		    currR += 360
+		    rot = rot + currR + ';'
+
+		    lupz--
+		}
+
+		addAnimation( krd, tyme, pth, scl, rot, ( 52 - todo ) * pawz )
+		// if ( todo == 1 ) { console.log(pth); console.log(scl); console.log(rot); console.log(lupz); }
+		todo--
+	    }
+	    window.setTimeout("anyRestore()", ( 2 + tyme + 52 * pawz ) * 1000 )
+	}
+
+	function any1( rndm ) {
+	    var x25 = 25 * viewX
+	    var x50 = 50 * viewX
+	    var y50 = 50 * viewY
+	    var maxX = x50 + x50
+	    var maxY = y50 + y50
+	    var todo = 52
+	    var tyme = rndm ? 20 : 30
+	    var pawz = rndm ?  0 : 0.1
+	    var loup = 4
+	    var nwXs = new Array( loup )
+	    var nwYs = new Array( loup )
+	    var sclz = new Array( loup )
+	    preAnimation( tyme, pawz )
+
+	    while( todo > 0 ) {
+		var ndx   = rndm ? Math.floor( Math.random() * 4 ) : ( todo % 4 )
+		var found = fNames[ ndx ]
+		var roy   = loHash[ found ]
+		var bakup = sltKez[ ndx ]
+		var rey   = loHash[ bakup ]
+
+		for ( ndx = 1; ndx < roy.length ; ndx++ ) {
+		    if ( roy[ ndx ] != undefined ) break
+		}
+		if ( ndx == roy.length ) continue
+
+		var krd    = roy[ ndx ]
+		rey[ ndx ] = roy[ ndx ]
+		roy[ ndx ] = undefined
+
+		if ( rndm || todo == 52 ) {
+		    nwXs[ 0 ] = Math.round( x25 * Math.random() + x25 )	 ; nwYs[ 0 ] = maxY
+		    nwXs[ 1 ] = maxX					 ; nwYs[ 1 ] = Math.round( y50 * Math.random())
+		    nwXs[ 2 ] = Math.round( x50 * Math.random()) + x50	 ; nwYs[ 2 ] = maxY
+		    nwXs[ 3 ] = 0					 ; nwYs[ 3 ] = 0
+
+		    sclz[ 0 ] = Math.round(( 0.75 - ( Math.random() / 4 )) * 100 ) / 100
+		    sclz[ 1 ] = Math.round(( 0.25 + ( Math.random() / 4 )) * 100 ) / 100
+		    sclz[ 2 ] = Math.round(( 0.75 - ( Math.random() / 4 )) * 100 ) / 100
+		    sclz[ 3 ] = 1
+		}
+
+		var strtX = fondX[ found ]
+		var strtY = fondY[ found ]
+		var currX = 0
+		var currY = 0
+		var newX
+		var newY
+		var pth = 'M0,0'
+
+		var currR = 0
+		var rot = currR + ';'
+		var currS = 1
+		var scl = currS + ';'
+
+		for ( ndx = 0; ndx < loup; ndx++ ) {
+		    newX  = nwXs[ ndx ] == 0 ? 0 : ( nwXs[ ndx ] - strtX ) + ( rndm ? 0 : 100 * Math.random())
+		    newY  = nwYs[ ndx ] == 0 ? 0 : ( nwYs[ ndx ] - strtY )
+
+		    pth = pth + ' Q ' + Math.round(( currX + newX ) / 2 )
+				+ ' ' + Math.round(( currY + newY ) / 2 ) + ' ' + newX + ' ' + newY
+
+		    currX = newX
+		    currY = newY
+
+		    currR += 360
+		    rot = rot + currR + ';'
+
+		    scl = scl + sclz[ ndx ] + ';'
+		}
+
+		addAnimation( krd, tyme, pth, scl, rot, ( 52 - todo ) * pawz )
+		// if ( todo == 1 ) { console.log(pth); console.log(scl); console.log(rot); }
+		todo--
+	    }
+	    window.setTimeout("anyRestore()", ( 2 + tyme + 52 * pawz ) * 1000 )
+	}
+
+	function any2( rndm ) {
+	    var todo = 52
+	    var tyme = 30
+	    var pawz = 0.1
+	    var maxL = 2
+	    var endXs = [ ( 80 * viewX ), ( 10 * viewX ), ( 50 * viewX ), 0 ]
+	    var endYs = [ ( 70 * viewY ), ( 10 * viewY ), ( 50 * viewY ), 0 ]
+	    var lupz  = [ maxL, maxL, ( maxL + maxL ), maxL ]
+	    var rdus  = [ ( 10 * viewX ), ( 10 * viewX ), ( 30 * viewX ), ( 10 * viewX ) ]
+	    preAnimation( tyme, pawz )
+
+	    var cw   = new Array( endXs.length )
+	    var opin = new Array( endXs.length )
+	    var lupe
+
+	    while( todo > 0 ) {
+		var ndx   = rndm ? Math.floor( Math.random() * 4 ) : ( todo % 4 )
+		var found = fNames[ ndx ]
+		var roy   = loHash[ found ]
+		var bakup = sltKez[ ndx ]
+		var rey   = loHash[ bakup ]
+
+		for ( ndx = 1; ndx < roy.length ; ndx++ ) {
+		    if ( roy[ ndx ] != undefined ) break
+		}
+		if ( ndx == roy.length ) continue
+
+		var krd    = roy[ ndx ]
+		rey[ ndx ] = roy[ ndx ]
+		roy[ ndx ] = undefined
+
+		if ( todo == 52 || rndm ) {
+		    lupe = 0
+		    for ( ndx = 0; ndx < lupz.length; ndx++ ) {
+			cw[   ndx ] = rndm ? (Math.random() > 0.5)			: ( ndx % 2 == 0 )
+			opin[ ndx ] = rndm ? (Math.random() > 0.5)			: ( ndx % 2 == 1 )
+			lupz[ ndx ] = rndm ? ( 1 + Math.round( Math.random() * maxL ))	: lupz[ ndx ]
+			lupe       += lupz[ ndx ]
+		    }
+		}
+
+		var endX, endY
+		var pth = 'M0,0'
+		var strtX = 0
+		var strtY = 0
+		for ( ndx = 0; ndx < lupz.length; ndx++ ) {
+		    endX  = endXs[ ndx ]
+		    endY  = endYs[ ndx ]
+		    if ( ndx < lupz.length - 1 ) {
+			endX += Math.floor( Math.random() * 70 ) - fondX[ found ]
+			endY += Math.floor( Math.random() * 70 ) - fondY[ found ]
+		    }
+		    pth  += makeSpiral( strtX,  strtY,  endX,  endY, lupz[ndx], cw[ndx], opin[ndx], rdus[ndx] )
+		    strtX =  endX
+		    strtY =  endY
+		}
+
+		var rot = '0;'
+		for ( ndx = 0; ndx < lupe; ndx++ ) rot += ( 360 + ndx * 360 ) + ';'
+
+		var scl = '1;'  + Math.round(( 0.25 + Math.random()) * 20 ) / 100 + ';'
+				+ Math.round(( 0.5  + Math.random()) * 25 ) / 100 + ';'
+				+ Math.round(( 0.25 + Math.random()) * 25 ) / 100 + ';1;'
+
+		addAnimation( krd, tyme, pth, scl, rot, ( 52 - todo ) * pawz )
+		// if ( todo == 1 ) { console.log(pth); console.log(scl); console.log(rot); console.log(lupz); }
+		todo--
+	    }
+	    window.setTimeout("anyRestore()", ( 2 + tyme + 52 * pawz ) * 1000 )
+	}
+
+	function any3( rndm ) {
+	    var endXs = [ 54*viewX, 33*viewX, -40*viewX, -40*viewX,  31*viewX, 35*viewX, -17*viewX, -56*viewX ]
+	    var endYs = [        0, 57*viewY,  36*viewY, -43*viewY, -29*viewY, 36*viewY,  21*viewY, -78*viewY ]
+
+	    var tyme = 30
+	    var todo = 52
+	    var pawz = 0.25
+	    preAnimation( tyme, pawz )
+
+	    while( todo > 0 ) {
+		var ndx   = rndm ? Math.floor( Math.random() * 4 ) : ( todo % 4 )
+		var found = fNames[ ndx ]
+		var roy   = loHash[ found ]
+		var bakup = sltKez[ ndx ]
+		var rey   = loHash[ bakup ]
+
+		for ( ndx = 1; ndx < roy.length ; ndx++ ) {
+		    if ( roy[ ndx ] != undefined ) break
+		}
+		if ( ndx == roy.length ) continue
+
+		var krd    = roy[ ndx ]
+		rey[ ndx ] = roy[ ndx ]
+		roy[ ndx ] = undefined
+
+		var ttlX = 0
+		var ttlY = 0
+		var pth = 'M0,0'
+		for ( ndx = 0; ndx < endXs.length ; ndx++ ) {
+		    var x = endXs[ ndx ]
+			+ ( rndm ? Math.floor(( Math.random() < 0.5 ? -100 : 100 ) * Math.random()) : 0 )
+		    var y = endYs[ ndx ]
+			+ ( rndm ? Math.floor(( Math.random() < 0.5 ? -100 : 100 ) * Math.random()) : 0 )
+
+		    if ( ndx == 0 ) {
+			y = 0 - fondY[ found ]
+		    } else if ( ndx == endXs.length - 1 ) {
+			x = 0 - ttlX
+			y = 0 - ttlY
+		    }
+		    if ( ndx != endXs.length - 1 ) {
+			ttlX += x
+			ttlY += y
+		    }
+		    pth += ' a' + Math.abs( x ) + ',' + Math.abs( y ) + ' 0,0,1 ' + x + ',' + y
+		}
+
+		var rot = '0;360;720;1080;'
+		var scl = rndm
+		    ? '1;' + ( Math.floor( 40 + Math.random() * 70 ) / 100 ) + ';'
+			   + ( Math.floor( 40 + Math.random() * 70 ) / 100 ) + ';1;'
+		    : '1;0.75;0.75;1;'
+
+		addAnimation( krd, tyme, pth, scl, rot, ( 52 - todo ) * pawz )
+		// if ( todo == 1 ) { console.log(pth); console.log(scl); }
+		todo--
+	    }
+	    window.setTimeout("anyRestore()", ( 2 + tyme + 52 * pawz ) * 1000 )
+	}
+
+	function any9restore() {
+	    anyRestore()
+	    var ndx
+	    for ( ndx = 0; ndx < DECK.length ; ndx++ ) {
+		var kard = DECK[ ndx ]
+		objBoard.appendChild( kard )
+	    }
+	}
+
+	function any9( rndm ) {
+	    //
+	    //	boring !!!
+	    //
+	    var tyme = 30
+	    var todo = 52
+	    var sttc = '0.01s'
+	    var ctrX = Math.round( 50 * viewX )
+	    var ctrY = Math.round( 50 * viewY )
+	    var rdus = Math.round( 50 * viewY )
+	    preAnimation( tyme, 0 )
+
+	    var spin0 = document.createElementNS( nsSvg, "g")
+	    spin0.setAttribute("transform", "translate(" + ctrX + "," + ctrY + ")")
+	    objBoard.appendChild(spin0)
+	    var well = document.createElementNS( nsSvg, "animateTransform")
+	    well.setAttribute("attributeName", "transform")
+	    well.setAttribute("attributeType", "xml")
+	    well.setAttribute("type", "rotate")
+	    well.setAttribute("values", "360;720;1080;")
+	    well.setAttribute("dur", tyme + "s")
+	    well.setAttribute("begin", sttc )
+	    well.setAttribute("fill", "freeze")
+	    well.setAttribute("additive", "sum")
+	    spin0.appendChild(well)
+
+	    HOLDER.push( spin0 )
+	    MOTIAN.push( [ well ] )
+
+	    while( todo > 0 ) {
+		var ndx   = rndm ? Math.floor( Math.random() * 4 ) : ( todo % 4 )
+		var found = fNames[ ndx ]
+		var roy   = loHash[ found ]
+		var bakup = sltKez[ ndx ]
+		var rey   = loHash[ bakup ]
+
+		for ( ndx = 1; ndx < roy.length ; ndx++ ) {
+		    if ( roy[ ndx ] != undefined ) break
+		}
+		if ( ndx == roy.length ) continue
+
+		var krd    = roy[ ndx ]
+		rey[ ndx ] = roy[ ndx ]
+		roy[ ndx ] = undefined
+
+		var strtX = fondX[ found ]
+		var strtY = fondY[ found ]
+		var id    = ( 52 - todo )
+		var rot   = 90 + Math.round( 10 * id * ( 360 / 52 )) / 10
+		var radn  = id * ( 360 / 52 ) * DEG2RAD
+
+		var dltX  = Math.round((( Math.cos( radn ) * rdus ) - strtX ) * 10 ) / 10
+		var dltY  = Math.round((( Math.sin( radn ) * rdus ) - strtY ) * 10 ) / 10
+
+		var kard = CARDS[ krd ]
+		spin0.appendChild( kard )
+
+		var pth = 'M0,0 l' + dltX + ',' + dltY
+
+		var motn = document.createElementNS( nsSvg, "animateMotion")
+		motn.setAttribute("path", pth )
+		motn.setAttribute("dur", sttc )
+		motn.setAttribute("fill", "freeze")
+		motn.setAttribute("additive", "sum")
+		kard.appendChild(motn)
+
+		var ontm = document.createElementNS( nsSvg, "animateTransform")
+		ontm.setAttribute("attributeName", "transform")
+		ontm.setAttribute("attributeType", "xml")
+		ontm.setAttribute("type", "rotate")
+		ontm.setAttribute("values", rot )
+		ontm.setAttribute("dur", sttc )
+		ontm.setAttribute("fill", "freeze")
+		ontm.setAttribute("additive", "sum")
+		kard.appendChild(ontm)
+
+		HOLDER.push( kard )
+		MOTIAN.push( [ motn, ontm ] )
+
+		// if ( todo == 1 ) { console.log(pth); console.log(radn); console.log(rot); }
+		todo--
+	    }
+	    window.setTimeout("any9restore()", ( 2 + tyme ) * 1000 )
+	}
+
+	function any4( rndm ) {
+	    var tyme = 30
+	    var todo = 52
+	    var pawz = 0.1
+	    var endX = Math.round( 50 * viewX )
+	    var endY = Math.round( 50 * viewY )
+	    var lupz = 2
+	    var loup = lupz + Math.round( lupz * 2 * Math.random())
+	    var syze = ( Math.random() < 0.5 ? -1 : 1 ) * ( 100 + Math.round( 100 * Math.random()))
+	    var rdus = 800
+	    preAnimation( tyme, pawz )
+
+	    while( todo > 0 ) {
+		var ndx   = rndm ? Math.floor( Math.random() * 4 ) : ( todo % 4 )
+		var found = fNames[ ndx ]
+		var roy   = loHash[ found ]
+		var bakup = sltKez[ ndx ]
+		var rey   = loHash[ bakup ]
+
+		for ( ndx = 1; ndx < roy.length ; ndx++ ) {
+		    if ( roy[ ndx ] != undefined ) break
+		}
+		if ( ndx == roy.length ) continue
+
+		var krd    = roy[ ndx ]
+		rey[ ndx ] = roy[ ndx ]
+		roy[ ndx ] = undefined
+
+		if ( rndm ) loup = lupz + Math.round( lupz * 2 * Math.random())
+
+		var lupe = 1 + lupz * 3 - loup
+		var pth = 'M0,0'
+		var relX = endX - fondX[ found ]
+		var relY = endY - fondY[ found ]
+		pth += makeSpiral( 0, 0, relX, relY, loup,  true, false, rdus )
+		pth += makeSpiral( relX, relY, 0, 0, lupe, false,  true, rdus )
+
+		var rot = '0;'
+		for ( ndx = 0; ndx < ( loup + lupe ); ndx++ ) rot += ( 360 + ndx * 360 ) + ';'
+
+		var scl = ''
+		for ( ndx = loup; ndx  > 0; ndx-- ) scl += Math.round( 100  * ndx / loup ) / 100 + ';'
+		if ( rndm ) syze = ( Math.random() < 0.5 ? -1 : 1 ) * ( 100 + Math.round( 100 * Math.random()))
+		for ( ndx = 1; ndx <= lupe; ndx++ ) scl += Math.round( syze * ndx / lupe ) / 100 + ';'
+		scl += '1;'
+
+		addAnimation( krd, tyme, pth, scl, rot, ( 52 - todo ) * pawz )
+		// if ( todo == 1 ) { console.log(pth); console.log(scl); console.log(rot); console.log(lupz); }
+		todo--
+	    }
+	    window.setTimeout("anyRestore()", ( 2 + tyme + 52 * pawz ) * 1000 )
+	}
+
+	function any5restore() {
+	    anyRestore()
+	    objBigHeart.setAttribute("fill", "#e61408")
+	}
+
+	function any5( rndm ) {
+	    var loup = 1 + ( rndm ? Math.floor( Math.random() * 4 ) : 1 )
+	    var tyme = 15 * loup
+	    var todo = 52
+	    var paaw = 0.15
+	    var paws = paaw + paaw
+	    var pawz = paws + paws
+	    var ctrX = Math.round( 50 * viewX )
+	    var ctrY = Math.round( 50 * viewY )
+	    var rdus = Math.round( 50 * viewY )
+	    preAnimation( tyme, pawz )
+
+	    objBoard.appendChild( objBigHeart )
+	    HOLDER.push( objBoard )
+	    MOTIAN.push( [ objBigHeart ] )
+
+	    if ( rndm ) {
+		var xdn
+		var clr = ''
+		var durt = Math.floor(tyme + 52 * pawz)
+		for ( xdn = 0; xdn < durt; xdn++ ) {
+		    clr += "rgb("
+			+ Math.floor( Math.random() * 256 ) + "," +
+			+ Math.floor( Math.random() * 256 ) + "," +
+			+ Math.floor( Math.random() * 256 ) + ");"
+		}
+		var hart = document.getElementById("hart")
+		var clr3 = document.createElementNS( nsSvg, "animate")
+		clr3.setAttribute("attributeName", "fill")
+		clr3.setAttribute("attributeType", "CSS")
+		clr3.setAttribute("calcMode", "discrete")
+		clr3.setAttribute("values", clr )
+		clr3.setAttribute("dur", durt + "s")
+		clr3.setAttribute("fill", "freeze")
+		hart.appendChild(clr3)
+
+		HOLDER.push( hart )
+		MOTIAN.push( [ clr3 ] )
+	    } else {
+		var clr1 = document.createElementNS( nsSvg, "animateTransform")
+		clr1.setAttribute("attributeName", "transform")
+		clr1.setAttribute("attributeType", "xml")
+		clr1.setAttribute("type", "scale")
+		clr1.setAttribute("values", "1;1.20;" )
+		clr1.setAttribute("dur", "1s")
+		clr1.setAttribute("repeatCount", "indefinite")
+		clr1.setAttribute("fill", "freeze")
+		clr1.setAttribute("additive", "sum")
+		objBigHeart.appendChild(clr1)
+
+		var clr2 = document.createElementNS( nsSvg, "animateTransform")
+		clr2.setAttribute("attributeName", "transform")
+		clr2.setAttribute("attributeType", "xml")
+		clr2.setAttribute("type", "translate")
+		clr2.setAttribute("values", "1;-208,-90;" )
+		clr2.setAttribute("dur", "1s")
+		clr2.setAttribute("repeatCount", "indefinite")
+		clr2.setAttribute("fill", "freeze")
+		clr2.setAttribute("additive", "sum")
+		objBigHeart.appendChild(clr2)
+
+		objBigHeart.setAttribute("fill", "url(#hartGradient1)")
+
+		HOLDER.push( objBigHeart )
+		MOTIAN.push( [ clr1, clr2 ] )
+	    }
+
+	    var id
+	    var endId = "any5rotated"
+	    while( todo > 0 ) {
+		var ndx   = rndm ? Math.floor( Math.random() * 4 ) : ( todo % 4 )
+		var found = fNames[ ndx ]
+		var roy   = loHash[ found ]
+		var bakup = sltKez[ ndx ]
+		var rey   = loHash[ bakup ]
+
+		for ( ndx = 1; ndx < roy.length ; ndx++ ) {
+		    if ( roy[ ndx ] != undefined ) break
+		}
+		if ( ndx == roy.length ) continue
+
+		var krd    = roy[ ndx ]
+		rey[ ndx ] = roy[ ndx ]
+		roy[ ndx ] = undefined
+
+		var strtX = fondX[ found ]
+		var strtY = fondY[ found ]
+		var id    = ( 52 - todo )
+
+		var rot   = 90 + Math.round( 10 * id * ( 360 / 52 )) / 10
+		if ( rot > 360 ) rot -= 360
+
+		var radn  = id * ( 360 / 52 ) * DEG2RAD
+
+		var dltX  = Math.round(( ctrX + ( Math.cos( radn ) * rdus ) - strtX ) * 10 ) / 10
+		var dltY  = Math.round(( ctrY + ( Math.sin( radn ) * rdus ) - strtY ) * 10 ) / 10
+
+		var kard = CARDS[ krd ]
+		objBoard.removeChild( kard )
+		objBoard.appendChild( kard )
+		id = 52 - todo
+
+		var pth = 'M0,0 a' + Math.abs(dltX) + ',' + Math.abs(dltY) + ' 0,0,1 ' + dltX + ',' + dltY
+		var motn = document.createElementNS( nsSvg, "animateMotion")
+		motn.setAttribute("id", "any5move" + id )
+		motn.setAttribute("path", pth )
+		motn.setAttribute("dur", pawz )
+		if ( id == 1 ) {
+		    motn.setAttribute("begin", paaw + "s")
+		} else if ( id > 1 ) {
+		    motn.setAttribute("begin", "any5move" + ( id - 2 ) + ".end")
+		}
+		motn.setAttribute("fill", "freeze")
+		motn.setAttribute("additive", "sum")
+		kard.appendChild(motn)
+
+		var ontm = document.createElementNS( nsSvg, "animateTransform")
+		ontm.setAttribute("attributeName", "transform")
+		ontm.setAttribute("attributeType", "xml")
+		ontm.setAttribute("type", "rotate")
+		ontm.setAttribute("values", "0;" + rot )
+		ontm.setAttribute("dur", pawz )
+		ontm.setAttribute("begin", "any5move" + id + ".begin")
+		ontm.setAttribute("fill", "freeze")
+		ontm.setAttribute("additive", "sum")
+		kard.appendChild(ontm)
+
+		pth = 'M0,0 a' + Math.abs(dltX) + ',' + Math.abs(dltY) + ' 0,0,1 ' + -dltX + ',' + -dltY
+		var rotn = document.createElementNS( nsSvg, "animateMotion")
+		rotn.setAttribute("id", "any5remove" + id )
+		rotn.setAttribute("path", pth )
+		rotn.setAttribute("dur", ( id == 0 ? paaw : pawz ))
+		if ( id == 0 ) {
+		    rotn.setAttribute("begin", endId + ".end")
+		} else if ( id == 1 ) {
+		    rotn.setAttribute("begin", "any5remove0.end")
+		} else if ( id > 1 ) {
+		    rotn.setAttribute("begin", "any5remove" + ( id - 2 ) + ".end")
+		}
+		rotn.setAttribute("fill", "freeze")
+		rotn.setAttribute("additive", "sum")
+		kard.appendChild(rotn)
+
+		var ontr = document.createElementNS( nsSvg, "animateTransform")
+		ontr.setAttribute("attributeName", "transform")
+		ontr.setAttribute("attributeType", "xml")
+		ontr.setAttribute("type", "rotate")
+		ontr.setAttribute("values", "0;" + -rot )
+		ontr.setAttribute("dur", ( id == 0 ? paaw : pawz ))
+		ontr.setAttribute("begin", "any5remove" + id + ".begin")
+		ontr.setAttribute("fill", "freeze")
+		ontr.setAttribute("additive", "sum")
+		kard.appendChild(ontr)
+
+		var crrX = dltX + strtX
+		var crrY = dltY + strtY
+
+		var newX = ctrX + ctrX - crrX
+		var newY = ctrY + ctrY - crrY
+
+		dltX  = Math.round(( newX - crrX ) * 10 ) / 10
+		dltY  = Math.round(( newY - crrY ) * 10 ) / 10
+
+		var revX = 0 - dltX
+		var revY = 0 - dltY
+
+		pth = 'M0,0'
+		for ( ndx = 0; ndx < loup; ndx++ ) {
+		    pth += ' a' + rdus + ',' + rdus + ' 0,0,1 ' + dltX + ',' + dltY
+		    pth += ' a' + rdus + ',' + rdus + ' 0,0,1 ' + revX + ',' + revY
+		}
+
+		var tomn = document.createElementNS( nsSvg, "animateMotion")
+		if ( endId != "") {
+		    tomn.setAttribute("id", endId )
+		    endId = ""
+		}
+		tomn.setAttribute("path", pth )
+		tomn.setAttribute("dur", tyme )
+		tomn.setAttribute("begin", "any5move51.end")
+		tomn.setAttribute("fill", "freeze")
+		tomn.setAttribute("additive", "sum")
+		kard.appendChild(tomn)
+
+		var nmot = document.createElementNS( nsSvg, "animateTransform")
+		nmot.setAttribute("attributeName", "transform")
+		nmot.setAttribute("attributeType", "xml")
+		nmot.setAttribute("type", "rotate")
+
+		//
+		//	usually out of phase: i.e. 3 vs loup
+		//
+		nmot.setAttribute("values", "0;360;720;1080;")
+
+		nmot.setAttribute("dur", tyme )
+		nmot.setAttribute("begin", "any5move51.end")
+		nmot.setAttribute("fill", "freeze")
+		nmot.setAttribute("additive", "sum")
+		kard.appendChild(nmot)
+
+		HOLDER.push( kard )
+		MOTIAN.push( [ motn, ontm, tomn, nmot, rotn, ontr ] )
+
+		// if ( todo == 1 ) { console.log(pth); console.log(radn); console.log(rot); }
+		todo--
+	    }
+	    window.setTimeout("anyRestore()", ( 2 + tyme + 52 * pawz ) * 1000 )
+	}
+
+	function any6( rndm ) {
+	    var vX   = viewX
+	    var vY   = viewY
+	    var rdus = 40*vY
+	    var tyme = 30
+	    var todo = 52
+	    var pawz = 0.3
+	    preAnimation( tyme, pawz )
+	    var endXs = [ 25*vX, 50*vX, 75*vX, 75*vX, 50*vX, 25*vX, 25*vX, 50*vX, 75*vX, 75*vX,   0 ]
+	    var endYs = [ 90*vY, 50*vY, 10*vY, 90*vY, 50*vY, 10*vY, 90*vY, 50*vY, 10*vY, 90*vY,   0 ]
+	    var rttns = [  -180,   -90,   -90,   180,    90,    90,  -180,   -90,   -90,   180, 180 ]
+	    var rtkey = [ .0625, .1250, .1875, .3125, .3850, .4575, .5925, .6650, .7075, .8325,   1 ]
+	    var sweep = [     0,     0,     1,     1,     1,     0,     0,     0,     1,     1,   1 ]
+	    var scale = [    .6,    .6,    .6,    .6,    .6,    .6,    .6,    .6,    .6,    .6,   1 ]
+
+//			  lw lf   ctr    up rt   lw rt  ctr   up lf  lw lf   ctr   up rt  lw rt   0
+
+	    while( todo > 0 ) {
+		var ndx   = rndm ? Math.floor( Math.random() * 4 ) : ( todo % 4 )
+		var found = fNames[ ndx ]
+		var roy   = loHash[ found ]
+		var bakup = sltKez[ ndx ]
+		var rey   = loHash[ bakup ]
+
+		for ( ndx = 1; ndx < roy.length ; ndx++ ) {
+		    if ( roy[ ndx ] != undefined ) break
+		}
+		if ( ndx == roy.length ) continue
+
+		var krd    = roy[ ndx ]
+		rey[ ndx ] = roy[ ndx ]
+		roy[ ndx ] = undefined
+
+		var fX    = Math.round( fondX[ found ] )
+		var fY    = Math.round( fondY[ found ] )
+
+		var strtX = fX
+		var strtY = fY
+
+		var dltX, dltY, endX, endY
+		var pth = 'M0,0'
+		var key = '0'
+		var rot = '0;'
+		var rut = 0
+		var scl = "1;"
+		for ( ndx = 0; ndx < endXs.length ; ndx++ ) {
+		    rut  += rttns[ ndx ]
+		    rot  += rut + ";"
+		    scl  += scale[ ndx ] + ";"
+		    //
+		    //	if there is a trailing ";" chrome and opera will discard the <animateTransform>
+		    //	firefox ignores a trailing ";"
+		    //
+		    key  += ";" + rtkey[ ndx ]
+
+		    endX  = endXs[ ndx ]
+		    endY  = endYs[ ndx ]
+		    dltX  = ( endX == 0 ? fX : endX ) - strtX
+		    dltY  = ( endY == 0 ? fY : endY ) - strtY
+		    var rx = ( strtX == endX ) ? rdus : Math.abs(dltX)
+		    var ry = ( strtX == endX ) ? rdus : Math.abs(dltY)
+
+		    pth  += " a" + rx + ',' + ry + ' 0,0,' + sweep[ ndx ] + ' ' + dltX + ',' + dltY
+		    strtX = endX
+		    strtY = endY
+		}
+
+		addAnimation( krd, tyme, pth, scl, rot, ( 52 - todo ) * pawz, key )
+		// if ( todo == 1 ) { console.log(pth); console.log(scl); console.log(rot); console.log(key); }
+		todo--
+	    }
+	    window.setTimeout("anyRestore()", ( 2 + tyme + 52 * pawz ) * 1000 )
+	}
+
+	function anyMate() {
+	    var time = new Date().getTime()
+	    var rand = ( 100 * Math.round( Math.random() * 64 ) + Math.round( Math.random() * 64 ))
+
+	    //
+	    //	-1 points for every 5 seconds. getTime() is in milliseconds
+	    //
+	    var pnlt = Math.round(( 2500 + time - TIMER ) / 5000 )
+	    var tyme = Math.round((  500 + time - TIMER ) / 1000 )
+	    var bons = Math.round( 700000 / tyme )
+	    manageScore( PLAY_DEMO ? rand : ( bons - pnlt ))
+
+	    CELEBRT = true
+	    var maxAny = 7
+	    var ndx = ( PARAM_ANY >= 0 && PARAM_ANY < maxAny )
+		? PARAM_ANY
+		: Math.round( Math.random() * 10000000 ) % maxAny
+
+	    var p1 = ( PARAM_RND == 0 || PARAM_RND == 1 )
+		? ( PARAM_RND == 1 )
+		: ( Math.random() < 0.5 )
+
+	    console.log('MOVES: ' + MOVES + ', TIME: ' + tyme + ', SCORE: ' + SCORE +  ', RAND: ' + rand + ', ndx: ' + ndx + ', p1: ' + p1 + ', TRYS: ' + TRYS + ', histB: ' + histB.join())
+
+	    if ( PLAY_DEMO ) {
+		PLAY_DEMO = false
+	    } else {
+		var theUrl = 'http://learnoo.altervista.org/winning.php?t=' + TRYS + '&d=' + DEAL + '&m=' + histB.join()
+		var img = new Image()
+		img.src = theUrl
+	    }
+
+	    if ( ndx != ndx ) {
+		p1 = false
+		window.setTimeout("any6(" + p1 + ")", ( mxTym * 1000 ))
+	    } else if ( ndx == 0 ) {
+		//
+		//	Spirals bouncing off sides
+		//	spirals are either synchronized or random
+		//
+		window.setTimeout("any0(" + p1 + ")", ( mxTym *  500 ))
+	    } else if ( ndx == 1 ) {
+		//
+		//	Synchronized rotating cards bouncing off sides
+		//
+		window.setTimeout("any1(" + p1 + ")", ( mxTym * 1000 ))
+	    } else if ( ndx == 2 ) {
+		//
+		//	One Big Spiral
+		//	Random: spirals in different quadrants
+		//	TODO: slight alignment issue on foundations
+		//
+		window.setTimeout("any2(" + p1 + ")", ( mxTym * 1000 ))
+	    } else if ( ndx == 3 ) {
+		//
+		//	One Big Spiral
+		//
+		window.setTimeout("any3(" + p1 + ")", ( mxTym * 1000 ))
+	    } else if ( ndx == 4 ) {
+		//
+		//	Multiple Big Spirals
+		//
+		window.setTimeout("any4(" + p1 + ")", ( mxTym * 1000 ))
+	    } else if ( ndx == 5 ) {
+		//
+		//	Beating Heart
+		//
+		window.setTimeout("any5(" + p1 + ")", ( mxTym * 1000 ))
+	    } else if ( ndx == 6 ) {
+		//
+		//	Infinity
+		//
+		window.setTimeout("any6(" + p1 + ")", ( mxTym * 1000 ))
+	    } else if ( ndx == maxAny ) {
+		//
+		//	unreachable !!!
+		//
+		window.setTimeout("any9(" + p1 + ")", ( mxTym * 1000 ))
+	    }
+	}
+
+	function clearTable( fondP0, fondP1, fondP2, fondP3, fondS0, fondS1, fondS2, fondS3 ) {
+	    var fondP = [ fondP0, fondP1, fondP2, fondP3 ]
+	    var fondS = [ fondS0, fondS1, fondS2, fondS3 ]
+	    var srt   = [ fondP0, fondP1, fondP2, fondP3 ]
+
+	    srt.sort( function(a, b){ return( a - b ) } )
+	    if ( srt[0] < 13 ) {
+		var ndx
+		for ( ndx = 0; ndx < fondP.length; ndx++ ) {
+		    if ( fondP[ ndx ] == srt[0] ) {
+			var need = ( fondS[ ndx ] * 13 ) + fondP[ ndx ]
+			var card = DECK[ need ]
+
+			var slot    = strNum[ card.getAttribute('slot') ]
+			var slotPos = strNum[ card.getAttribute('slotPos') ]
+			var slotNam = sltKez[ slot ]
+
+			clearAnimation()
+			processFromTo( slotNam, slotPos, fNames[ ndx ], fondP[ ndx ], card )
+
+			fondP[ ndx ]++
+			if (( fondP[0] + fondP[1] + fondP[2] + fondP[3] ) < 52 ) {
+			    window.setTimeout("clearTable("
+				+ fondP[0] + "," + fondP[1] + "," + fondP[2] + "," + fondP[3] + ","
+				+ fondS[0] + "," + fondS[1] + "," + fondS[2] + "," + fondS[3] + ")", ( mxTym * 500 )
+			    )
+			} else {
+			    anyMate()
+			}
+
+			break
+		    }
+		}
+	    }
+	}
+
+	function ping(evt) {
+	    if ( CELEBRT ) return
+
+	    var card    = evt.currentTarget
+	    var id      = strNum[ card.getAttribute('id') ]
+	    var slot    = strNum[ card.getAttribute('slot') ]
+	    var slotPos = strNum[ card.getAttribute('slotPos') ]
+	    var numbr   = ( id % 13 )
+	    var suite   = Math.floor( id / 13 )
+	    var slotNam = sltKez[ slot ]
+	    var ndx
+	    var waste = ( slotNam == 'lWaste')
+	    var dirct = ( waste ? -1 : 1 )
+	    var xposd = ( slotPos == 0 || LAYOUT[ slot ][ slotPos + dirct ] == undefined )
+
+	    if ( DEBUG )
+		console.log('Attempt, move#: ' + MOVES + ' id: ' + id + ' card: ' + NAMEZ[ id ] + ' suite: '
+		    + suite + ' numbr: ' + numbr + ' slot: ' + slot + ' slotNam: ' + slotNam + ' slotPos: '
+		    + slotPos + ' cardNdx: ' + card.getAttribute('cNdx') + ' xposd: ' + xposd
+		    + ( xposd ? '' : ' ' + ( slotPos + dirct ) + ': ' + LAYOUT[ slot ][ slotPos + dirct ] ))
+
+	    clearAnimation()
+
+	    //
+	    //	waste card is covered by another card - not playable
+	    //
+	    if ( waste && ! xposd ) return	// todo: shake
+
+	    //
+	    //	test foundation and tableau slot starting to the right of the clicked card
+	    //	if the clicked card is an Ace on the tableau, set the starting point at the end of the tableau
+	    //
+	    var xdn = 0
+	    var cntrClockwise = new Array( sltKez.length )
+	    for ( ndx = 0; ndx < sltKez.length; ndx++ ) {
+		//
+		//	test foundations first
+		//
+		if ( sltKez[ ndx ].indexOf('lFond', 0 ) == 0 ) cntrClockwise[ xdn++ ] = sltKez[ ndx ]
+	    }
+	    var start = ( slot == 0 ? 7 : slot )
+	    for ( ndx = sltKez.length -1; ndx >= 0; ndx-- ) {
+		start--
+		if ( start < 0 ) start = sltKez.length -1
+		if ( sltKez[ start ].indexOf('lFond', 0 ) == 0 ) continue
+
+		cntrClockwise[ xdn++ ] = sltKez[ start ]
+	    }
+
+	    //
+	    //	need to 'ask' each exposed card ... suite & number ...
+	    //		every tableau other than 'lStock', 'lWaste'
+	    //
+	    var legal = false
+	    var key, ray, pos
+	    for ( ndx = 0; ndx < sltKez.length; ndx++ ) {
+		key = cntrClockwise[ ndx ]
+		var cue = kezSlt[ key ]
+
+		//
+		//	cards are never moved to the stock
+		//
+		if ( key == slotNam || key == 'lStock' || key == 'lWaste' ) continue
+
+		var isTablo = ( key.indexOf('lTabl', 0 ) == 0 )
+
+		//
+		//	groups of cards can only be moved to *another* tableau
+		//
+		if ( ! isTablo && ! xposd ) continue
+
+		ray = loHash[ key ]
+		for ( pos = ray.length -1; pos >= 0; pos-- ) {
+		    if ( ray[ pos ] != undefined ) break
+		}
+
+		if ( pos == 0 ) {
+		    if ( numbr == 0 && isTablo == false ) {
+			//	ACE -> start of foundation
+			legal = true
+		    } else if ( numbr == 12 && isTablo ) {
+			//	KING -> start of tableau
+			legal = true
+		    }
+		} else {
+		    var trgtId = CARDZ[ ray[ pos ] ]
+		    var trgtN  = ( trgtId % 13 )
+		    var trgtS  = Math.floor( trgtId / 13 )
+		    if ( isTablo == false ) {
+			legal = ( trgtN == numbr - 1 && trgtS     == suite )
+		    } else {
+			legal = ( trgtN == numbr + 1 && trgtS % 2 != suite % 2 )
+		    }
+		}
+		if ( legal ) break
+	    }
+
+	    if ( legal ) {
+		if ( DEBUG ) console.log('LEGAL: From: ' + slotNam + ' / ' + slotPos + ' To: ' + key + ' / ' + pos + ' numbr: ' + numbr + ' suite: ' + suite )
+
+		processFromTo( slotNam, slotPos, key, pos, card )
+	    } else {
+		zeroClock()
+		var roy = LAYOUT[ slot ]
+		for ( ndx = slotPos; ndx < roy.length; ndx++ ) {
+		    //
+		    //	shake one card if lFond*
+		    //	shake one or more cards if lTabl*
+		    //
+		    if ( roy[ ndx ] == undefined ) break
+		    var kard = CARDS[ roy[ ndx ] ]
+
+		    var motn = document.createElementNS( nsSvg, "animateMotion")
+		    motn.setAttribute("path", 'M0,0 L10,5 L0,0 L-10,5 L0,0 Z')
+		    motn.setAttribute("dur", "0.5s")
+		    motn.setAttribute("fill", "freeze")
+
+		    kard.appendChild(motn)
+		    HOLDER.push( kard )
+		    MOTIAN.push( [ motn ] )
+		}
+	    }
+	}
+
+	function processHist(isForward) {
+	    var strng = (( DEBG2 || DEBG3 ) ? snapShot( LAYOUT, undefined, CARDS, CARDZ ) : '')
+
+	    var move, fromSlotNum, toSlotNum, toPos
+	    if ( isForward ) {
+		//
+		//	Forward, i.e., replay
+		//
+		move = manageButtons( false, false, undefined )
+		if ( DEBG2 || DEBG3 || DEBUG )
+		    strng += 'Move: ' + move + ', histB: ' + histB.length + ', histF: ' + histF.length
+
+		if ( DEBG2 || DEBUG ) console.log( strng )
+		if ( DEBG3 ) histL.push( strng )
+
+		if ( move < 0 && move != FLIPA ) {
+		    if ( lStock[0] == undefined && pHoldS[ 2 ].getAttribute('faceUp') == '1') {
+			flipAgain(false)
+		    } else {
+			flip3Test( move, false )
+		    }
+		} else if ( move == FLIPA && histB.length == 0 ) {
+		    //
+		    //	game start
+		    //
+		    flip3Test( move, false )
+		} else {
+		    if ( move > AUTUP ) move -= AUTUP
+		    manageButtons( false, true, move )
+		    fromSlotNum = Math.floor( move / 10000 )
+		    toSlotNum = Math.floor(( move % 10000 ) / 100 )
+		    toPos  = move % 100
+
+		    var ray   = LAYOUT[ fromSlotNum ]
+		    var fromPos, card
+
+		    var fromSlot = sltKez[ fromSlotNum ]
+		    var toSlot = sltKez[ toSlotNum ]
+
+		    if ( fromSlot == 'lWaste') {
+			for ( fromPos = 0; fromPos < ray.length; fromPos++ ) {
+			    if ( ray[ fromPos ] != undefined ) break
+			}
+			card = CARDS[ ray[ fromPos ] ]
+		    } else {
+			for ( fromPos = 1; fromPos < ray.length; fromPos++ ) {
+			    if ( ray[ fromPos ] == undefined ) break
+			}
+		    }
+
+		    if ( fromSlot.indexOf('lTabl', 0 ) == 0 && toSlot.indexOf('lTabl', 0 ) == 0 ) {
+			//
+			//	tableau -> tableau : only case where more than one card can be moved at once
+			//
+			var numbr
+			if ( toPos == 0 ) {
+			    //
+			    //	only a king can move to an empty tableau
+			    //
+			    numbr = 12
+			} else {
+			    numbr = (( CARDZ[ LAYOUT[ toSlotNum ][ toPos ] ] % 13 ) -1 )
+			}
+			do {
+			    fromPos--
+			    card = CARDS[ ray[ fromPos ] ]
+			} while ( numbr != ( CARDZ[ ray[ fromPos ] ] ) % 13 )
+		    } else if ( fromSlot != 'lWaste') {
+			fromPos--
+			card = CARDS[ ray[ fromPos ] ]
+		    }
+
+		    processFromTo( fromSlot, fromPos, toSlot, toPos, card )
+		    if ( DEBUG ) histD.push('z: ' + histD.length + ', m: ' + move + ', s: ' + lStock.join() + ' w: ' + lWaste.join())
+		}
+	    } else {
+		//
+		//	Backwards, i.e., undo
+		//
+		move = manageButtons( true, false, undefined )
+		if ( move < 0 ) {
+		    unFlip3( move )
+		    if ( move != FLIPA || histB.length == 0 ) {
+			return
+		    } else {
+			//
+			//	undo auto flip - not counted as a move
+			//	always associated with a move, not with a manual flip
+			//	unless it is the first flip at game start
+			//
+			move = manageButtons( true, false, undefined )
+		    }
+		}
+		if ( DEBG2 || DEBG3 || DEBUG )
+		    strng += 'Move: ' + move + ', histB: ' + histB.length + ', histF: ' + histF.length
+
+		if ( DEBG2 || DEBUG ) console.log( strng )
+		if ( DEBG3 ) histL.push( strng )
+
+		manageButtons( false, true, move )
+		var autoFaceUp	= ( move  > AUTUP )
+		if ( autoFaceUp )   move -= AUTUP
+		fromSlotNum	= Math.floor( move / 10000 )
+		toSlotNum	= Math.floor(( move % 10000 ) / 100 )
+		toPos		= move % 100
+
+		if ( DEBUG ) console.log( histD.pop())
+		if ( DEBUG ) console.log('Z: ' + histD.length + ', M: ' + move + ', S: ' + lStock.join() + ' W: ' + lWaste.join())
+		processToFrom( fromSlotNum, autoFaceUp, toSlotNum, toPos )
+	    }
+	}
+
+	function processButton(evt) {
+	    if ( CELEBRT ) return
+
+	    if ( evt.type == "click") {
+		clearAnimation()
+		var id = evt.currentTarget.getAttribute('id')
+		if ( id == 'bttnHistF' && histF.length > 0 ) {
+		    processHist( true )
+		} else if ( id == 'bttnHistB' && histB.length > 0 ) {
+		    processHist( false )
+		}
+	    }
+	}
+
+	function showHideStock(evt) {
+	    if ( CELEBRT ) return
+
+	    if ( evt.type == "click") {
+		clearAnimation()
+		var id = evt.currentTarget.getAttribute('id')
+		switch( id ) {
+		    case 'stock0':
+			startGame()
+			break
+
+		    case 'stock1':
+			flip3(FLPM3)
+			break
+
+		    case 'stock2':
+			flipAgain(true)
+			break
+
+		    default:
+			break
+		}
+	    }
+	}
+
+	function MenuOptionProc(evt, option) {
+	    if ( CELEBRT ) return
+
+	    evt.stopPropagation()
+	    objBoard.removeChild( objMenuX )
+	    objBoard.removeChild( objMenuMDL )
+	    MENUX = false
+
+	    switch( option ) {
+		case 0:
+		    wipeBoard()
+		    restart()
+		    break
+
+		case 1:
+		    beginGame()
+		    break
+
+		case 2:
+		    winGame( true )
+		    break
+
+		case 3:
+		    playDemo( PLAY_DEMO = true )
+		    break
+
+		case 4:
+		    break
+
+		default:
+		    console.log('ERROR: ' + evt + ' ... ' + option )
+		    break
+	    }
+	}
+
+	function MenuShowHide(evt) {
+	    if ( CELEBRT ) return
+
+	    // TODO: should not be available ( or options should be adjusted ) if game has not started
+	    if ( MENUX ) {
+		objBoard.removeChild( objMenuX )
+		objBoard.removeChild( objMenuMDL )
+	    } else {
+		objBoard.appendChild( objMenuMDL )
+		objBoard.appendChild( objMenuX )
+	    }
+	    MENUX = ! MENUX
+	}
+    </script>
+    <title> Solitaire.SVG </title>
+</head>
+<body style="margin: 0px; overflow: hidden; " onload="redoHtml()">
+
+<svg id="mumble" viewBox="0 0 2400 1400" preserveAspectRatio="none" onload="init()">
+  <g id="board">
+    <rect x="0" y="0" width="100%" height="100%" class="fillRed" stroke-width="0" />
+  </g>
+
+  <defs id="svgDefs">
+    <g id="hamburger" class="menuHB">
+	<rect width="4.0%" height="6.0%" rx="18" ry="18" />
+	<text x="2.03%" y="5.2%" class="HB">&#x2261;</text>
+    </g>
+    <g id="menuModal" class="zeroOL" >
+	<rect width="100%" height="100%" class="zeroOL zeroOP" />
+    </g>
+
+    <!-- for height value, refer to variable gapF -->
+    <rect id="cardOutline" width="8.5%" height="20%" rx="24" ry="24" />
+
+    <g id="placementOutline" stroke-width="0">
+	<use xlink:href="#cardOutline" style="fill: white;" />
+	<use xlink:href="#cardOutline" transform="translate(5,6) scale(0.95, 0.96)" class="fillGreen" />
+    </g>
+
+    <g id="cardBackOutline" stroke-width="0">
+	<use xlink:href="#cardOutline" style="fill: white;" />
+	<use xlink:href="#cardOutline" transform="translate(5,6) scale(0.95, 0.96)" />
+    </g>
+
+    <g id="cardFaceOutline" stroke-width="0">
+	<use xlink:href="#cardOutline" style="fill: black;" />
+	<use xlink:href="#cardOutline" class="playBG playCR" transform="translate(.8,1.5) scale(0.99)" style="fill: white;" />
+    </g>
+
+    <pattern  id="pattern1"/>	<!--	empty placeholder	-->
+
+    <g id="foundation">
+      <use xlink:href="#placementOutline" />
+      <text x="28" y="210" class="big">A</text>
+    </g>
+
+    <g id="tableau">
+      <use xlink:href="#placementOutline" />
+      <text x="28" y="210" class="big">K</text>
+    </g>
+
+    <g id="waste"><use xlink:href="#placementOutline" /></g>
+    <g id="candy1">
+      <g>
+
+	<!-- dur : refer to CNDYTM -->
+	<animateTransform
+	    id="candy1animate"
+	    attributeName="transform"
+	    begin="0s"
+	    end="click"
+	    dur="9s"
+	    type="rotate"
+	    from="360 102 140"
+	    to="0 102 140"
+	    repeatCount="indefinite"
+	    fill="remove"
+	    restart="never"
+	  />
+
+	<circle id="candy1circle" cx="102" cy="140" r="80" style="fill: yellow;"/>
+	<path id="candy1path1" d="M 182 140
+	    A 80 80, 0, 1, 0,  22 140
+	    A 40 40, 0, 1, 0, 102 140" style="fill: blue;"/>
+	<path id="candy1path2" d="M 102 141
+	    A 40 40, 0, 1, 1, 182 141" style="fill: yellow;"/>
+      </g>
+    </g>
+    <g id="stockImg0" class="playCR">
+      <use xlink:href="#placementOutline" />
+      <use xlink:href="#candy1" />
+    </g>
+    <g id="stockImg1" class="playCR">
+      <!--						-->
+      <!--	This is defined in makeCardBack()	-->
+      <!--						-->
+      <use xlink:href="#back1" />
+    </g>
+    <g id="stockImg2">
+      <use xlink:href="#placementOutline" />
+    </g>
+
+    <circle id="buttonCirc" cx="72" cy="72" r="72" class="button" />
+    <polygon id="buttonRow" points="24,50 76,50 76,18 124,72 76,124 76,94 24,94" style="cursor:pointer; stroke-width:9; stroke-linejoin: round;" />
+    <polygon id="buttonWor" points="120,50 68,50 68,18 20,72 68,124 68,94 120,94" style="cursor:pointer; stroke-width:9; stroke-linejoin: round;" />
+    <text id="buttonTextB" x="72" y="80" class="smallBlack" style="text-anchor: middle" > </text>
+    <text id="buttonTextF" x="72" y="80" class="smallBlack" style="text-anchor: middle" > </text>
+    <g id="buttonBph" >
+      <use xlink:href="#buttonCirc" />
+      <use xlink:href="#buttonWor" class="allRed" />
+    </g>
+    <g id="buttonB" >
+      <use xlink:href="#buttonCirc" />
+      <use xlink:href="#buttonWor" class="allGreen" />
+      <use xlink:href="#buttonTextB" />
+    </g>
+    <g id="buttonFph">
+      <use xlink:href="#buttonCirc" />
+      <use xlink:href="#buttonRow" class="allRed" />
+    </g>
+    <g id="buttonF">
+      <use xlink:href="#buttonCirc" />
+      <use xlink:href="#buttonRow" class="allGreen" />
+      <use xlink:href="#buttonTextF" />
+    </g>
+
+    <rect id="scoreRect" width="35" height="40" class="allRed" />
+    <text id="scoreText" x="72" y="80" class="smallBlack" style="text-anchor: middle" > </text>
+    <g id="scoreBox">
+      <use xlink:href="#scoreRect" />
+      <use xlink:href="#scoreText" />
+    </g>
+
+    <path id="pipD"
+	d="M 0 100 Q 60, 60, 100 0 Q 140 60, 200 100 Q 140 140, 100 200 Q 60 140, 0 100 z"
+	stroke-width="0" fill="#e61408"/>
+
+    <path id="pipH" d="
+	M                     196,  52
+	C 194, 111, 120, 154,  98, 200
+	C  76, 154,   2, 111,   0,  52
+	A   1,   1    0 0 1    98,  52
+	A   1,   1    0 0 1   196,  52
+	 z" stroke-width="0" fill="#e61408"/>
+
+    <path id="hart" d="
+	M                     196,  52
+	C 194, 111, 120, 154,  98, 200
+	C  76, 154,   2, 111,   0,  52
+	A   1,   1    0 0 1    98,  52
+	A   1,   1    0 0 1   196,  52
+	 z" stroke-width="0" />
+
+    <path id="pipS" d="
+	M  37, 200
+	c  41,   0,  41, -62,  42, -69
+	c  -8,  30, -78,  30, -78, -21
+	c   0, -44,  66, -75,  85,-110
+	c  19,  35,  85,  66,  85, 110
+	c   0,  51, -70,  51, -78,  21
+	c   1,   7,   1,  69,  43,  69
+	 z" stroke-width="0" fill="black"/>
+
+    <path id="pipC" d="
+	M  52, 200
+	a  40,  60    0 0 0    42, -61
+	a  50,  60,   0 0 0   -17,  12
+	a  38,  38    0 1 1     0, -56
+	a  36,  36,   0 0 0    12,   9
+	a  73,  70,   0 0 0   -17, -28
+	a  40,  40    0 1 1    56,   0
+	a  73,  70,   0 0 0   -17,  28
+	a  36,  36,   0 0 0    12,  -9
+	a  38,  38    0 1 1     0,  56
+	a  50,  60,   0 0 0   -17, -12
+	a  40,  60    0 0 0    42,  61
+	 z" stroke-width="0" fill="black"/>
+
+    <g id="pipDSmall" class="playCR" transform="scale(0.3),  translate(390, 40)"><use xlink:href="#pipD" /></g>
+    <g id="pipDBig"   class="playCR" transform="scale(0.75), translate(30, 130)"><use xlink:href="#pipD" /></g>
+
+    <g id="pipHSmall" class="playCR" transform="scale(0.3),  translate(390, 40)" ><use xlink:href="#pipH" /></g>
+    <g id="pipHBig"   class="playCR" transform="scale(0.75), translate(30, 130)" ><use xlink:href="#pipH" /></g>
+    <g id="bigH"      class="playCR" transform="scale(3.00), translate(305,140)" ><use xlink:href="#hart" /></g>
+
+    <g id="pipSSmall" class="playCR" transform="scale(0.3),  translate(420, 40)"><use xlink:href="#pipS" /></g>
+    <g id="pipSBig"   class="playCR" transform="scale(0.75), translate(45, 130)"><use xlink:href="#pipS" /></g>
+
+    <g id="pipCSmall" class="playCR" transform="scale(0.3),  translate(400, 40)"><use xlink:href="#pipC" /></g>
+    <g id="pipCBig"   class="playCR" transform="scale(0.75), translate(30, 130)"><use xlink:href="#pipC" /></g>
+
+    <radialGradient id="hartGradient1" fx="78%" fy="22%" >
+	<stop offset="0%">
+	    <animate attributeName="stop-color" values="#e61408;#FF007F;" dur="1s" repeatCount="indefinite" />
+	</stop>
+	<stop offset="100%" stop-color="#e61408" />
+    </radialGradient>
+
+  </defs>
+</svg>
+
+</body>
+</html>
